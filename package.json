@@ -1,0 +1,27 @@
+{
+  "name": "fpm-iot-cloud-middleware",
+  "private": true,
+  "version": "1.0.0",
+  "description": "An middleware for fpm-iot-cloud",
+  "main": "source/app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test/*.test.js",
+    "start": "node source/app.js",
+    "dev": "./node_modules/.bin/nodemon source/app.js",
+    "docker": "docker-compose -f docker-compose.dev.yml up --build -d",
+    "docker:staging": "docker pull 192.168.100.196:5000/raiwav-server && docker-compose -f docker-compose.staging.yml up --build -d",
+    "docker:deploy": "docker-compose up --build -d",
+    "make:win": "./Makefile.bat",
+    "bot": "node ./fake/bot.js",
+    "nodemon": "./node_modules/.bin/nodemon source/app.js"
+  },
+  "author": "FPM-TEAM",
+  "dependencies": {
+    "mqtt": "^2.18.8"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
+  }
+}

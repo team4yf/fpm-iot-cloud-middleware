@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    build: .
+    volumes:
+      - ./source:/app/source
+    ports:
+      - "1883:1883"
+    networks: 
+      - staging-network
+networks:
+  staging-network: 
