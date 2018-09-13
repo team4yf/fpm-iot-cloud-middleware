@@ -33,12 +33,16 @@ const createNB4Youren = fpm => {
     const { payload } = message;
     fpm.logger.info(topic, { sid, payload })
 
-    fpm.execute('mqtt.publish', { topic, payload: payload.toString('hex') })
+    fpm.execute('mqtt.publish', { topic, payload: payload.toString('hex') });
 
   })
 
   fpm.subscribe('$s2d/nb/youren/push', (topic, data) => {
-    console.info('$s2d/nb/youren/push', data)
+    message = decoder(data)
+    const { sid } = message.header;
+    const { payload } = message;
+    fpm.logger.info('nbiot.send', {id: sid, message: payload.toString('hex')})
+    fpm.execute('nbiot.send', {id: sid, message: payload.toString('hex')});
   })
 };
 
