@@ -3,7 +3,7 @@ const _ = require('lodash');
 exports.decoder = hex => {
     // src is a buffer array
     // ex: 01 02 03 04, 01 02 03 04, 01 02 03 04, | ....
-    // it's contains UID!4B, PID!4B, SID!4B, DATA!?B
+    // it's contains UID!4B, PID!4B, SID!8B, DATA!?B
     // 
 
     if(_.isString(hex)){
