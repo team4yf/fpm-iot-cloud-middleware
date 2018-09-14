@@ -13,18 +13,19 @@ const fpmServer = new Fpm();
 const biz = fpmServer.createBiz('0.0.1');
 
 /* Env > Config.json > Default Value */
-const { MQTT_HOST = 'localhost', MQTT_PORT = 1883, MQTT_USERNAME = 'admin', MQTT_PASSWORD = '123123123' } = process.env;
+const { MQTT_HOST, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD } = process.env;
 
-const { host, port, username, password } = Object.assign(fpmServer.getConfig('mqttserver'), { 
-  host: MQTT_HOST, 
-  port: MQTT_PORT,
-  username: MQTT_USERNAME,
-  password: MQTT_PASSWORD });
+const mqttserverOption = fpmServer.getConfig('mqttserver', { host: 'localhost', port: 1883, username: 'admin', password: '123123123'})
+const { host, port, username, password } = Object.assign(mqttserverOption, { 
+  host: MQTT_HOST || mqttserverOption.host, 
+  port: MQTT_PORT || mqttserverOption.port,
+  username: MQTT_USERNAME || mqttserverOption.username,
+  password: MQTT_PASSWORD || mqttserverOption.password });
 
 
 console.info('config:', { host, port, username, password })
 
-const client = mqtt.connect(`mqtt://${host}:port`, { username, password });
+const client = mqtt.connect(`mqtt://${host}:${port}`, { username, password });
 
 biz.addSubModules('mqtt', {
   publish: args => {
