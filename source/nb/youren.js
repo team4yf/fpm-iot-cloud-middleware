@@ -33,7 +33,7 @@ const createNB4Youren = fpm => {
     topic = `$d2s/u${uid}/p${pid}/nb`;
     message.header.network = 'nb';
     const payload = JSON.stringify(message)
-    fpm.logger.info({ topic, payload })
+    // fpm.logger.info({ topic, payload })
     fpm.execute('mqtt.publish', { topic, payload });
 
   })
@@ -42,7 +42,7 @@ const createNB4Youren = fpm => {
     message = decoder(data)
     const { sid, nb } = message.header;
     const { payload } = message;
-    fpm.logger.info('nbiot.send', {id: nb, message: payload.toString('hex')})
+    // fpm.logger.info('nbiot.send', {id: nb, message: payload.toString('hex')})
     fpm.execute('nbiot.send', {id: nb, message: payload.toString('hex')});
   })
 };
