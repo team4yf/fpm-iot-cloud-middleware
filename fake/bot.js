@@ -24,8 +24,8 @@ const send = ( client, data ) => {
     // //{"id":"fffefdfc","message":"fffefdfc03000200010011","callback":2}
     // data = Buffer.from('ff fe fd fc 03 00 02 00 11 00 00 00 00 00 00 00 01 00 00 00 00 01 29 00 00 00 f8 16'.split(' ').join(''), 'hex')
     // client.write(data);
-    const nb = '12345678901234580'
-    data = data || Buffer.from(`00000001000000021234567890123450ffffffff01020304`, 'hex')
+    const nb = '01234567890123458'
+    data = data || Buffer.from(`0000000100000002${nb}ffffffff01020304`, 'hex')
     console.info(data.toString('hex'), data)
     client.write(data);
 }
