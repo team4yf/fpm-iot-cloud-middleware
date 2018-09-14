@@ -14,10 +14,11 @@ exports.decoder = hex => {
     }
     const uid = hex.readUIntBE(0, 4);
     const pid = hex.readUIntBE(4, 4);
-    const nb = hex.toString('utf8', 8, 8 + 15); // it should be a utf8 string with 15 bytes
+    let nb = hex.toString('hex', 8, 8 + 8); // it should be a utf8 string with 8 bytes
+    nb = nb.substring(1)
     // const sid = hex.readUIntBE('utf8', 23, 4);
-    const sid = hex.toString('hex', 23, 23 + 4);
-    const data = hex.slice(23);
+    const sid = hex.toString('hex', 16, 16 + 4);
+    const data = hex.slice(16);
 
     return { header: { uid, pid, nb, sid }, payload: data.toString('hex') }
 }
