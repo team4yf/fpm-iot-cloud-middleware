@@ -31,6 +31,7 @@ const createTcp = fpm => {
     message = message.data || message
     const { uid, pid, sid } = message.header;
     topic = `$d2s/u${uid}/p${pid}/tcp`;
+    message.header.network = 'tcp';
     const payload = JSON.stringify(message)
     fpm.logger.info({ topic, payload })
     fpm.execute('mqtt.publish', { topic, payload });
