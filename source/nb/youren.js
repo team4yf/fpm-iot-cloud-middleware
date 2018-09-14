@@ -39,7 +39,9 @@ const createNB4Youren = fpm => {
   })
 
   fpm.subscribe('$s2d/nb/youren/push', (topic, data) => {
+    
     message = decoder(data)
+    console.info('$s2d/nb/youren/push', message)
     const { sid } = message.header;
     const { payload } = message;
     fpm.logger.info('nbiot.send', {id: sid, message: payload.toString('hex')})
