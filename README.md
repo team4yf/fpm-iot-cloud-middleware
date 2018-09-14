@@ -19,5 +19,12 @@ the [1-4] is the UserId, the [5-8] is the ProjectId, the [9-16] is the NB Id, th
 This NB code is string as `hex` with length = 15
 
 
+## Device Events
+- TCP online
+- TCP offline
+- NB online
+
+## Query
+- isTcpOnline?
 
 

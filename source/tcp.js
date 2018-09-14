@@ -3,13 +3,14 @@ const { decoder } = require('./kit.js');
 
 const createTcp = fpm => {
 
+  let socketServer
   ///*
   if(fpm.isPluginInstalled('fpm-plugin-socket')){
     // use the fpm-plugin-socket
     const plugin = fpm.getPlugins()['fpm-plugin-socket'];
     if(plugin){
       // get the socket server
-      const socketServer = plugin.package.getServer();
+      socketServer = plugin.package.getServer();
 
       // set decode function
       socketServer.setDataDecoder((src) => {
@@ -35,7 +36,6 @@ const createTcp = fpm => {
     const payload = JSON.stringify(message)
     fpm.logger.info({ topic, payload })
     fpm.execute('mqtt.publish', { topic, payload });
-
   })
 
   fpm.subscribe('$s2d/tcp/push', (topic, message) => {
@@ -44,7 +44,15 @@ const createTcp = fpm => {
     const { payload } = message;
     fpm.execute('socket.send', {id: sid, message: payload.toString('hex')})
   })
-  
+
+  fpm.subscribe('#socket/offline', (topic, message) => {
+    message = decoder(message)
+    const { sid } = message.header;
+    if(socketServer){
+      socketServer.deviceOffline(socketServer.createClient(sid))
+    }
+  })
+
   fpm.subscribe('#socket/close', (topic, message) => {
     console.info('#socket/close', message)
   })

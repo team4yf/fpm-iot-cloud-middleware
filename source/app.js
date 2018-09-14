@@ -40,8 +40,17 @@ fpmServer.run()
 	.then(fpm => {
     createTcp(fpm);
     createNB(fpm);
-    client.subscribe(['$s2d/tcp/push', '$s2d/nb/youren/push']);
+    client.subscribe(['$s2d/tcp/push', '$s2d/nb/youren/push', '$d2s/offline/tcp']);
     client.on('message', (topic, message) => {
-      fpm.publish(topic, message)
+      switch(topic){
+        case '$s2d/tcp/push':
+        case '$s2d/nb/youren/push':
+          fpm.publish(topic, message);
+          return;
+        case '$d2s/offline/tcp':
+          fpm.publish('#socket/offline', message);
+          return;
+      }
+      
     })
 	});
