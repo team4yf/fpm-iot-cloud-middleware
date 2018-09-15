@@ -24,14 +24,14 @@ const send = ( client, data ) => {
     // //{"id":"fffefdfc","message":"fffefdfc03000200010011","callback":2}
     // data = Buffer.from('ff fe fd fc 03 00 02 00 11 00 00 00 00 00 00 00 01 00 00 00 00 01 29 00 00 00 f8 16'.split(' ').join(''), 'hex')
     // client.write(data);
-    const nb = '01234567890123458'
-    data = data || Buffer.from(`0000000100000002${nb}ffffffff01020304`, 'hex')
+    const nb = '0123456789012345'
+    data = data || Buffer.from(`0000000100000002${nb}ffffffff01020301020304`, 'hex')
     console.info(data.toString('hex'), data)
     client.write(data);
 }
 
 const run = (client) => {
-    intervalHandle = setInterval( () => {send(client)}, 10 * 1000)    
+    intervalHandle = setInterval( () => {send(client)}, 10 * 1000)
 }
 
 const reconnect = () => {
@@ -41,7 +41,6 @@ const reconnect = () => {
 
 const create = () => {
     let client = net.createConnection({ host: LOCAL_HOST, port: PORT, timeout: 9 * 1000 }, () =>{
-        
         console.log('------------- Connected! Ready To GO ...');
         if(intervalHandle){
             clearInterval(intervalHandle)

@@ -1,16 +1,13 @@
 const _ = require('lodash');
 
 exports.decoder = hex => {
-    // src is a buffer array
-    // ex: 01 02 03 04, 01 02 03 04, 01 02 03 04, | ....
-    // it's contains UID!4B, PID!4B, NB!15B, SID!4B, DATA!?B
-    // 
-
+    // hex is a buffer array
+    // see the protocol at README.md file
     if(_.isString(hex)){
         hex = Buffer.from(hex, 'hex');
     }
     if(!Buffer.isBuffer(hex)){
-        return { header: { uid: -1, pid: -1, nb: -1, sid: -1}, payload: Buffer.from([0,0,0,0])}
+        return { header: { uid: -1, pid: -1, nb: -1, sid: -1, fn: -1, extra: -1}, payload: Buffer.from([0,0,0,0,0,0,0,0])}
     }
     try{
         const uid = hex.readUIntBE(0, 4);
