@@ -12,13 +12,28 @@ Transform the data from `tcp`/`nb` to the `fpm-iot-cloud-mqtt` server.
 Data Flow From `Device` <=> `Server`
 
 the data should be a Buffer array with `hex` .
-Such as: `00 00 00 01 | 00 00 00 02 | 00 00 00 00 ff fe fd fc 00 00 00 00 ff fe fd fc | 01 03 05 ....` .
+Such as:
+```javascript
+// The hex data
+/*
 
-the [1-4] is the UserId, the [5-8] is the ProjectId, the [9-16] is the NB Id, the [17-20] is the SerialId, the [17-*] is the origin data .
+---------------------------------------------------------------------------------------------------------------
+|             |             |                         |             |      |       |                  |       |
+| 00 00 00 01 | 00 00 00 02 | 00 00 00 00 00 00 00 00 | ff fe fd fc |  01  | 03 05 | 01 02 03 04 .... | a1 b2 |
+|             |             |                         |             |      |       |                  |       |
+\ --- 4B --- / \ --- 4B -- / \ -------  8B --------- / \ --- 4B -- / \ 1B / \  2B / \ ----- ?B ----- / \ 2B  /
+|             |             |                         |             |      |       |                  |       |
+---------------------------------------------------------------------------------------------------------------
+|             |             |                         |             |      |       |                  |       |
+|   UserID    |  ProjectID  |          NBID           |      SN     |  FN  | EXTRA |        DATA      |  CRC  |
+|             |             |                         |             |      |       |                  |       |
+---------------------------------------------------------------------------------------------------------------
+                                                      |                                                       |
+                                                      \  -----------------   Origin DATA   -----------------  /
+---------------------------------------------------------------------------------------------------------------
 
-This NB code is string as `hex` with length = 15
-
-
+*/
+```
 ## Device Events
 - TCP online
 - TCP offline
