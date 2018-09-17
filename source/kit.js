@@ -1,13 +1,26 @@
 const _ = require('lodash');
 
+const TAG = '[Decoder]:';
+const MIN_DATA_LENGTH = 25;
+
 exports.decoder = hex => {
+    if(!hex){
+        console.error(TAG, `The hex is Undefined`);
+        return ;
+    }
     // hex is a buffer array
     // see the protocol at README.md file
     if(_.isString(hex)){
         hex = Buffer.from(hex, 'hex');
     }
     if(!Buffer.isBuffer(hex)){
-        return { header: { uid: -1, pid: -1, nb: -1, sid: -1, fn: -1, extra: -1}, payload: Buffer.from([0,0,0,0,0,0,0,0])}
+        // The hex data unreadable.
+        console.error(TAG, `The hex type is ${ typeof hex } ! It can be decode .`, hex);
+        return ;
+    }
+    if(hex.length < 25){
+        console.error(TAG, `The hex data is too short. It's at least 25 bytes`, hex);
+        return ;
     }
     try{
         const uid = hex.readUIntBE(0, 4);
@@ -23,7 +36,7 @@ exports.decoder = hex => {
 
         return { header: { uid, pid, nb, sid, fn, extra }, payload: data.toString('hex') }
     }catch(e){
-        console.error(e);
-        return { header: { uid: -1, pid: -1, nb: -1, sid: -1, fn: -1, extra: -1}, payload: Buffer.from([0,0,0,0,0,0,0,0])}
+        console.error(TAG, 'Exception:', e);
+        return ;
     }
 }

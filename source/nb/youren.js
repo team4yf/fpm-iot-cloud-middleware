@@ -27,6 +27,9 @@ const createNB4Youren = fpm => {
   }
   //*/
   fpm.subscribe('#nbiot/receive', (topic, data) => {
+    if(undefined === data){
+      return ;
+    }
     // HOW TO Use The NB Code ?
     let { message, nb } = data;
     const { uid, pid, sid } = message.header;

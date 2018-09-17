@@ -15,6 +15,10 @@ const createTcp = fpm => {
       // set decode function
       socketServer.setDataDecoder((src) => {
         const message = decoder(src)
+        if(message === undefined){
+          // decode error
+          return ;
+        }
         const { sid } = message.header;
         return { id: sid, data: message };
       });
