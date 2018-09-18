@@ -12,6 +12,8 @@ Transform the data from `tcp`/`nb` to the `fpm-iot-cloud-mqtt` server.
 Data Flow From `Device` <=> `Server`
 
 the data should be a Buffer array with `hex` .
+
+It must be `25b` < length < `64kb`
 Such as:
 ```javascript
 // The hex data

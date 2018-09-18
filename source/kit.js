@@ -1,7 +1,8 @@
 const _ = require('lodash');
 
 const TAG = '[Decoder]:';
-const MIN_DATA_LENGTH = 25;
+const MIN_DATA_LENGTH = 25; // 25b
+const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 
 exports.decoder = hex => {
     if(!hex){
@@ -18,8 +19,12 @@ exports.decoder = hex => {
         console.error(TAG, `The hex type is ${ typeof hex } ! It can be decode .`, hex);
         return ;
     }
-    if(hex.length < 25){
+    if(hex.length < MIN_DATA_LENGTH){
         console.error(TAG, `The hex data is too short. It's at least 25 bytes`, hex);
+        return ;
+    }
+    if(hex.length > MAX_DATA_LENGTH){
+        console.error(TAG, `The hex data is too large. 64 KB limit`, hex);
         return ;
     }
     try{
