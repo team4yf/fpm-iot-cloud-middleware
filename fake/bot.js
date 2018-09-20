@@ -28,6 +28,7 @@ const send = ( client, data ) => {
     data = data || Buffer.from(`0000000100000002${nb}ffffffff01020301020304`, 'hex')
     console.info(data.toString('hex'), data)
     client.write(data);
+    client.write(Buffer.from(`fffefdfcaa00010012000000000000000000000101012c00f2000080b3`, 'hex'));
 }
 
 const run = (client) => {
