@@ -4,8 +4,8 @@ const TAG = '[Decoder]:';
 const MIN_DATA_LENGTH = 25; // 25b
 const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 
-const protocols = [
-    hex => {
+const protocols = {
+    0x0: hex => {
         try{
             const uid = hex.readUIntBE(2, 2);   // the message user id
             const pid = hex.readUIntBE(4, 4);   // the project id
@@ -23,9 +23,25 @@ const protocols = [
             console.error(TAG, 'Exception:', e);
             return ;
         }
-    }
-]
+    },
+    0xff: hex => {
+        try{
+            const uid = 0;   // the message user id
+            const pid = 0;   // the project id
+            // normally the nb id is a string with 15 numbers
+            let nb = ''; // the nb id ? optionial
+            const sid = hex.toString('hex', 0, 4);    // the device sn id
+            const fn = hex.readUIntBE(4, 1);   // the function code
+            const extra = hex.readUIntBE( 5, 2);   // the extra data
+            const data = hex; // the message origin data
 
+            return { header: { vid: 0xff, uid, pid, nb, sid, fn, extra }, payload: data.toString('hex') };
+        }catch(e){
+            console.error(TAG, 'Exception:', e);
+            return ;
+        }
+    }
+}
 
 exports.decoder = hex => {
     if(!hex){
