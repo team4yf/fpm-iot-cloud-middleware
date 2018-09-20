@@ -26,8 +26,8 @@ const protocols = {
     },
     0xff: hex => {
         try{
-            const uid = 0;   // the message user id
-            const pid = 0;   // the project id
+            const uid = 1;   // the message user id
+            const pid = 1;   // the project id
             // normally the nb id is a string with 15 numbers
             let nb = ''; // the nb id ? optionial
             const sid = hex.toString('hex', 0, 4);    // the device sn id
