@@ -1,11 +1,16 @@
 const _ = require('lodash');
 
 const TAG = '[Decoder]:';
-const MIN_DATA_LENGTH = 25; // 25b
+const MIN_DATA_LENGTH_P_0 = 25; // 25b
+const MIN_DATA_LENGTH_P_FF = 5; // 25b
 const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 
 const protocols = {
     0x0: hex => {
+        if(hex.length < MIN_DATA_LENGTH_P_0){
+            console.error(TAG, `The hex data is too short. It's at least ${MIN_DATA_LENGTH_P_0} bytes`, hex);
+            return ;
+        }
         try{
             const uid = hex.readUIntBE(1, 3);   // the message user id
             const pid = hex.readUIntBE(4, 4);   // the project id
@@ -25,6 +30,10 @@ const protocols = {
         }
     },
     0xff: hex => {
+        if(hex.length < MIN_DATA_LENGTH_P_FF){
+            console.error(TAG, `The hex data is too short. It's at least ${MIN_DATA_LENGTH_P_FF} bytes`, hex);
+            return ;
+        }
         try{
             const uid = 1;   // the message user id
             const pid = 1;   // the project id
@@ -32,7 +41,7 @@ const protocols = {
             let nb = ''; // the nb id ? optionial
             const sid = hex.toString('hex', 0, 4);    // the device sn id
             const fn = hex.readUIntBE(4, 1);   // the function code
-            const extra = hex.readUIntBE( 5, 2);   // the extra data
+            const extra = hex.readUIntBE(5, 2);   // the extra data
             const data = hex; // the message origin data
 
             return { header: { vid: 0xff, uid, pid, nb, sid, fn, extra }, payload: data.toString('hex') };
@@ -58,15 +67,10 @@ exports.decoder = hex => {
         console.error(TAG, `The hex type is ${ typeof hex } ! It can be decode .`, hex);
         return ;
     }
-    if(hex.length < MIN_DATA_LENGTH){
-        console.error(TAG, `The hex data is too short. It's at least 25 bytes`, hex);
-        return ;
-    }
     if(hex.length > MAX_DATA_LENGTH){
         console.error(TAG, `The hex data is too large. 64 KB limit`, hex);
         return ;
     }
-    
     const vid = hex.readUIntBE(0, 1);   // the message protocol version
     const protocol = protocols[vid];
     if(protocol === undefined){
