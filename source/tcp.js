@@ -43,6 +43,7 @@ const createTcp = fpm => {
   })
 
   fpm.subscribe('$s2d/tcp/push', (topic, message) => {
+    console.log('$s2d/tcp/push', message);
     message = decoder(message)
     const { sid } = message.header;
     const { payload } = message;
