@@ -69,5 +69,9 @@ exports.decoder = hex => {
     
     const vid = hex.readUIntBE(0, 2);   // the message protocol version
     const protocol = protocols[vid];
+    if(protocol === undefined){
+        console.error(TAG, `Vid: ${vid} Not Exists!`)
+        return ;
+    }
     return protocol(hex);
 }
