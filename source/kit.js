@@ -7,7 +7,7 @@ const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 const protocols = {
     0x0: hex => {
         try{
-            const uid = hex.readUIntBE(2, 2);   // the message user id
+            const uid = hex.readUIntBE(1, 3);   // the message user id
             const pid = hex.readUIntBE(4, 4);   // the project id
             // normally the nb id is a string with 15 numbers
             let nb = hex.toString('hex', 8, 8 + 8); // the nb id ? optionial
@@ -67,7 +67,7 @@ exports.decoder = hex => {
         return ;
     }
     
-    const vid = hex.readUIntBE(0, 2);   // the message protocol version
+    const vid = hex.readUIntBE(0, 1);   // the message protocol version
     const protocol = protocols[vid];
     if(protocol === undefined){
         console.error(TAG, `Vid: ${vid} Not Exists!`)
