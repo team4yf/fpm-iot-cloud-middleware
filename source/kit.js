@@ -74,7 +74,7 @@ exports.decoder = hex => {
     const vid = hex.readUIntBE(0, 1);   // the message protocol version
     const protocol = protocols[vid];
     if(protocol === undefined){
-        console.error(TAG, `Vid: ${vid} Not Exists!`)
+        console.error(TAG, `Vid: ${vid} Not Exists!, the origin data: ${ hex.toString('hex') }`)
         return ;
     }
     return protocol(hex);

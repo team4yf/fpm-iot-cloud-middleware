@@ -27,18 +27,21 @@ const createNB4Youren = fpm => {
   }
   //*/
   fpm.subscribe('#nbiot/receive', (topic, data) => {
-    if(undefined === data){
+    if(undefined == data){
       return ;
     }
     // HOW TO Use The NB Code ?
-    let { message, nb } = data;
-    const { uid, pid, sid } = message.header;
-    topic = `$d2s/u${uid}/p${pid}/nb`;
-    message.header.network = 'nb';
-    const payload = JSON.stringify(message)
-    // fpm.logger.info({ topic, payload })
-    fpm.execute('mqtt.publish', { topic, payload });
-
+    try{
+      let { message, nb } = data;
+      const { uid, pid, sid } = message.header;
+      topic = `$d2s/u${uid}/p${pid}/nb`;
+      message.header.network = 'nb';
+      const payload = JSON.stringify(message)
+      // fpm.logger.info({ topic, payload })
+      fpm.execute('mqtt.publish', { topic, payload });
+    }catch(e){
+     console.error('Exception:', e) 
+    }
   })
 
   fpm.subscribe('$s2d/nb/youren/push', (topic, data) => {
