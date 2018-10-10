@@ -9,7 +9,7 @@ WORKDIR /app
 EXPOSE 1883
 
 RUN npm i -g yarn \
-    && yarn config set registry http://registry.npm.taobao.org \
+    # && yarn config set registry http://registry.npm.taobao.org \
     && yarn install --production \
     && npm i -g nodemon
 
