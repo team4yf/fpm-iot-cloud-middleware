@@ -38,12 +38,12 @@ const createTcp = fpm => {
     topic = `$d2s/u${uid}/p${pid}/tcp`;
     message.header.network = 'tcp';
     const payload = JSON.stringify(message)
-    fpm.logger.info({ topic, payload })
+    // fpm.logger.info({ topic, payload })
     fpm.execute('mqtt.publish', { topic, payload });
   })
 
   fpm.subscribe('$s2d/tcp/push', (topic, message) => {
-    console.log('$s2d/tcp/push', message);
+    // console.log('$s2d/tcp/push', message);
     message = decoder(message)
     const { sid } = message.header;
     const { payload } = message;
