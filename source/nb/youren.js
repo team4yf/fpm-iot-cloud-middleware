@@ -40,7 +40,7 @@ const createNB4Youren = fpm => {
       // fpm.logger.info({ topic, payload })
       fpm.execute('mqtt.publish', { topic, payload });
     }catch(e){
-     console.error('Exception:', e) 
+     console.error('Exception:', e)
     }
   })
 
