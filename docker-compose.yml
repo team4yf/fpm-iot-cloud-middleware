@@ -12,7 +12,7 @@ services:
       MQTT_PORT: 1883
       MQTT_USERNAME: "admin"
       MQTT_PASSWORD: "123123123"
-    networks: 
+    networks:
       - staging-network
 networks:
-  staging-network: 
+  staging-network:
