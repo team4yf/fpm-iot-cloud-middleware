@@ -33,6 +33,9 @@ const createNB4Youren = fpm => {
     // HOW TO Use The NB Code ?
     try{
       let { message, nb } = data;
+      if(message == undefined ){
+        return ;
+      }
       const { uid, pid, sid } = message.header;
       topic = `$d2s/u${uid}/p${pid}/nb`;
       message.header.network = 'nb';

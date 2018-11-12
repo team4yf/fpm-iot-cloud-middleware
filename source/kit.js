@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const TAG = '[Decoder]:';
-const MIN_DATA_LENGTH_P_0 = 25; // 25b
+const MIN_DATA_LENGTH_P_0 = 22; // 25b
 const MIN_DATA_LENGTH_P_FF = 5; // 5b
 const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 
