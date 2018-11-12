@@ -12,12 +12,15 @@
     "docker:deploy": "docker-compose up --build -d",
     "hook:staging": "curl -H \"Content-Type:application/json\" -X POST -d {} http://192.168.100.196:9001/webhook/run/scripts/iotmid",
     "make:win": "./Makefile.bat",
+    "run:docker": "docker-compose up --build -d",
+    "run:pm2": "pm2 start source/app.js --name fpm-iot-cloud-middleware -i 1",
     "bot": "node ./fake/bot.js",
     "nodemon": "./node_modules/.bin/nodemon source/app.js"
   },
   "author": "FPM-TEAM",
   "dependencies": {
     "babel-runtime": "^6.0.0",
+    "fpm-plugin-mqtt-client": "0.0.2",
     "fpm-plugin-nbiot": "^1.0.7",
     "fpm-plugin-socket": "^1.0.8",
     "lodash": "^4.17.11",

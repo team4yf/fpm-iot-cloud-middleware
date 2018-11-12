@@ -41,19 +41,20 @@ const createNB4Youren = fpm => {
       message.header.network = 'nb';
       const payload = JSON.stringify(message)
       // fpm.logger.info({ topic, payload })
-      fpm.execute('mqtt.publish', { topic, payload });
+      fpm.execute('mqttclient.publish', { topic, payload });
     }catch(e){
      console.error('Exception:', e)
     }
   })
 
   fpm.subscribe('$s2d/nb/youren/push', (topic, data) => {
-    message = decoder(data)
+    message = decoder(data);
     if(!message) return;
-    const { sid, nb } = message.header;
+    const { nb } = message.header;
     const { payload } = message;
     // fpm.logger.info('nbiot.send', {id: nb, message: payload.toString('hex')})
     fpm.execute('nbiot.send', {id: nb, message: payload.toString('hex')});
+    
   })
 };
 
