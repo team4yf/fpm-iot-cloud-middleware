@@ -1,18 +1,19 @@
 version: '3'
 services:
-  web:
+  middleware:
     build: .
+    container_name: 'fpm-iot-middleware'
     volumes:
-      - ./source:/app/source
       - ./config.json:/app/config.json
     ports:
       - "5001:5001"
     environment:
-      MQTT_HOST: "192.168.100.196"
+      MQTT_HOST: "localhost"
       MQTT_PORT: 1883
       MQTT_USERNAME: "admin"
       MQTT_PASSWORD: "123123123"
     networks:
-      - staging-network
+      - fpm-network
+    restart: always
 networks:
-  staging-network:
+  fpm-network:

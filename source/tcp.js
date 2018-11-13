@@ -37,17 +37,17 @@ const createTcp = fpm => {
     const { uid, pid, sid } = message.header;
     topic = `$d2s/u${uid}/p${pid}/tcp`;
     message.header.network = 'tcp';
-    const payload = JSON.stringify(message)
-    // fpm.logger.info({ topic, payload })
-    fpm.execute('mqtt.publish', { topic, payload });
+    const payload = JSON.stringify(message);
+    fpm.execute('mqttclient.publish', { topic, payload })
+      .catch(fpm.logger.error);
   })
 
   fpm.subscribe('$s2d/tcp/push', (topic, message) => {
-    // console.log('$s2d/tcp/push', message);
     message = decoder(message)
     const { sid } = message.header;
     const { payload } = message;
     fpm.execute('socket.send', {id: sid, message: payload.toString('hex')})
+      .catch(fpm.logger.error);
   })
 
   fpm.subscribe('#socket/offline', (topic, message) => {
@@ -59,7 +59,7 @@ const createTcp = fpm => {
   })
 
   fpm.subscribe('#socket/close', (topic, message) => {
-    console.info('#socket/close', message)
+    fpm.logger.error('#socket/close', message)
   })
 };
 
