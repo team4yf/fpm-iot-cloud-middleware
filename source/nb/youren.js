@@ -39,11 +39,11 @@ const createNB4Youren = fpm => {
       const { uid, pid, sid } = message.header;
       topic = `$d2s/u${uid}/p${pid}/nb`;
       message.header.network = 'nb';
-      const payload = JSON.stringify(message)
-      // fpm.logger.info({ topic, payload })
-      fpm.execute('mqttclient.publish', { topic, payload });
+      const payload = JSON.stringify(message);
+      fpm.execute('mqttclient.publish', { topic, payload })
+        .catch( error => fpm.logger.error('#nbiot/receive => mqttclient.publish', { topic, payload }, error));
     }catch(e){
-     console.error('Exception:', e)
+      fpm.logger.error('Exception:', e)
     }
   })
 
@@ -52,8 +52,8 @@ const createNB4Youren = fpm => {
     if(!message) return;
     const { nb } = message.header;
     const { payload } = message;
-    // fpm.logger.info('nbiot.send', {id: nb, message: payload.toString('hex')})
-    fpm.execute('nbiot.send', {id: nb, message: payload.toString('hex')});
+    fpm.execute('nbiot.send', {id: nb, message: payload.toString('hex')})
+      .catch( error => fpm.logger.error('$s2d/nb/youren/push => nbiot.send', {id: nb, message: payload.toString('hex')}, error));
     
   })
 };

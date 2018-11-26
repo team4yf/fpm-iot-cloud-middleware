@@ -47,7 +47,7 @@ const createTcp = fpm => {
     const { sid } = message.header;
     const { payload } = message;
     fpm.execute('socket.send', {id: sid, message: payload.toString('hex')})
-    .catch( error => fpm.logger.error('$s2d/tcp/push => socket.send', {id: sid, message: payload.toString('hex')}, error));
+      .catch( error => fpm.logger.error('$s2d/tcp/push => socket.send', {id: sid, message: payload.toString('hex')}, error));
   })
 
   fpm.subscribe('#socket/offline', (topic, message) => {
