@@ -51,7 +51,10 @@ const createTcp = fpm => {
   })
 
   fpm.subscribe('#socket/offline', (topic, message) => {
-    message = decoder(message)
+    message = decoder(message);
+    if( message === undefined ){
+      return;
+    }
     const { sid } = message.header;
     if(socketServer){
       socketServer.deviceOffline(socketServer.createClient(sid))
