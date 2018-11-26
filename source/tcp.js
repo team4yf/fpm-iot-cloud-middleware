@@ -39,7 +39,7 @@ const createTcp = fpm => {
     message.header.network = 'tcp';
     const payload = JSON.stringify(message);
     fpm.execute('mqttclient.publish', { topic, payload })
-      .catch(fpm.logger.error);
+      .catch( error => fpm.logger.error('#socket/receive => mqttclient.publish', { topic, payload }, error));
   })
 
   fpm.subscribe('$s2d/tcp/push', (topic, message) => {
@@ -47,7 +47,7 @@ const createTcp = fpm => {
     const { sid } = message.header;
     const { payload } = message;
     fpm.execute('socket.send', {id: sid, message: payload.toString('hex')})
-      .catch(fpm.logger.error);
+    .catch( error => fpm.logger.error('$s2d/tcp/push => socket.send', {id: sid, message: payload.toString('hex')}, error));
   })
 
   fpm.subscribe('#socket/offline', (topic, message) => {
