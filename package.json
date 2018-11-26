@@ -8,14 +8,10 @@
     "test": "./node_modules/.bin/mocha test/*.test.js",
     "start": "node source/app.js",
     "dev": "./node_modules/.bin/nodemon source/app.js",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build -d",
-    "docker:deploy": "docker-compose up --build -d",
-    "hook:staging": "curl -H \"Content-Type:application/json\" -X POST -d {} http://192.168.100.196:9001/webhook/run/scripts/iotmid",
-    "make:win": "./Makefile.bat",
+    "make:linux": "./Makefile.sh",
     "run:docker": "docker-compose up --build -d",
     "run:pm2": "pm2 start source/app.js --name fpm-iot-cloud-middleware -i 1",
-    "bot": "node ./fake/bot.js",
-    "nodemon": "./node_modules/.bin/nodemon source/app.js"
+    "bot": "node ./fake/bot.js"
   },
   "author": "FPM-TEAM",
   "dependencies": {
