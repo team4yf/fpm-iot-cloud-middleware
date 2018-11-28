@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { decoder } = require('./kit.js');
+const { decoder, hex2JSON } = require('./kit.js');
 
 const createTcp = fpm => {
 
@@ -32,6 +32,7 @@ const createTcp = fpm => {
     }
   }
   //*/
+  
   fpm.subscribe('#socket/receive', (topic, message) => {
     message = message.data || message
     const { uid, pid, sid } = message.header;
@@ -48,6 +49,22 @@ const createTcp = fpm => {
     const { payload } = message;
     fpm.execute('socket.send', {id: sid, message: payload.toString('hex')})
       .catch( error => fpm.logger.error('$s2d/tcp/push => socket.send', {id: sid, message: payload.toString('hex')}, error));
+  })
+
+  fpm.subscribe('$s2d/tcp/broadcast', (topic, message) => {
+    message = decoder(message)
+    const { payload } = message;
+    const data = hex2JSON(payload);
+    fpm.execute('socket.broadcast', data)
+      .catch( error => fpm.logger.error('$s2d/tcp/broadcast => socket.broadcast', data, error));
+  })
+
+  fpm.subscribe('$s2d/tcp/addChannel', (topic, message) => {
+    message = decoder(message)
+    const { payload } = message;
+    const data = hex2JSON(payload);
+    fpm.execute('socket.addChannel', data)
+      .catch( error => fpm.logger.error('$s2d/tcp/addChannel => socket.addChannel', data, error));
   })
 
   fpm.subscribe('#socket/offline', (topic, message) => {

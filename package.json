@@ -18,12 +18,11 @@
     "babel-runtime": "^6.0.0",
     "fpm-plugin-mqtt-client": "^1.0.0",
     "fpm-plugin-nbiot": "^1.0.7",
-    "fpm-plugin-socket": "^1.0.8",
+    "fpm-plugin-socket": "^1.0.9",
     "lodash": "^4.17.11",
     "yf-fpm-server": "^2.5.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "yf-fpm-client-js": "^1.0.2"

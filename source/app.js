@@ -16,7 +16,14 @@ fpmServer.run()
 	.then(fpm => {
     createTcp(fpm);
     createNB(fpm);
-    fpm.execute('mqttclient.subscribe', { topic: ['$s2d/tcp/push', '$s2d/nb/youren/push', '$d2s/offline/tcp']});
+    fpm.execute('mqttclient.subscribe', 
+      { topic: [
+        '$s2d/tcp/push',
+        '$s2d/tcp/broadcast',
+        '$s2d/nb/youren/push', 
+        '$d2s/offline/tcp', 
+        '$d2s/online/tcp'
+      ]});
 
     // const handler = (topic, message) =>{
     //   switch(topic){
@@ -32,6 +39,10 @@ fpmServer.run()
 
     fpm.subscribe('$d2s/offline/tcp', (topic, message) =>{
       fpm.publish('#socket/offline', message);
+    });
+
+    fpm.subscribe('$d2s/online/tcp', (topic, message) =>{
+      fpm.publish('#socket/online', message);
     });
     
 	});

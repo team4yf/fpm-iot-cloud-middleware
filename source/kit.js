@@ -83,3 +83,27 @@ exports.decoder = hex => {
   }
   return protocol(hex);
 }
+
+exports.hex2JSON = hex => {
+  if(!hex){
+    console.error(TAG, `The hex is Undefined`);
+    return ;
+  }
+  // hex is a buffer array
+  // see the protocol at README.md file
+  if(_.isString(hex)){
+    hex = Buffer.from(hex, 'hex');
+  }
+  if(!Buffer.isBuffer(hex)){
+    // The hex data unreadable.
+    console.error(TAG, `The hex type is ${ typeof hex } ! It can be decode .`, hex);
+    return ;
+  }
+  const str = hex.toString('ascii');
+  try{
+    return JSON.parse(str);
+  }catch(e){
+    console.error(TAG, `The string ${ str } cant be parse to JSON .`);
+    return;
+  }
+}
