@@ -52,18 +52,12 @@ const createTcp = fpm => {
   })
 
   fpm.subscribe('$s2d/tcp/broadcast', (topic, message) => {
-    message = decoder(message)
-    const { payload } = message;
-    const data = hex2JSON(payload);
-    fpm.execute('socket.broadcast', data)
+    fpm.execute('socket.broadcast', JSON.parse(message.toString()))
       .catch( error => fpm.logger.error('$s2d/tcp/broadcast => socket.broadcast', data, error));
   })
 
   fpm.subscribe('$s2d/tcp/addChannel', (topic, message) => {
-    message = decoder(message)
-    const { payload } = message;
-    const data = hex2JSON(payload);
-    fpm.execute('socket.addChannel', data)
+    fpm.execute('socket.addChannel', JSON.parse(message.toString()))
       .catch( error => fpm.logger.error('$s2d/tcp/addChannel => socket.addChannel', data, error));
   })
 

@@ -20,22 +20,11 @@ fpmServer.run()
       { topic: [
         '$s2d/tcp/push',
         '$s2d/tcp/broadcast',
+        '$s2d/tcp/addChannel',
         '$s2d/nb/youren/push', 
         '$d2s/offline/tcp', 
         '$d2s/online/tcp'
       ]});
-
-    // const handler = (topic, message) =>{
-    //   switch(topic){
-    //     case '$s2d/tcp/push':
-    //     case '$s2d/nb/youren/push':
-    //       fpm.publish(topic, message);
-    //       return;
-    //     case '$d2s/offline/tcp':
-    //       fpm.publish('#socket/offline', message);
-    //       return;
-    //   }
-    // };
 
     fpm.subscribe('$d2s/offline/tcp', (topic, message) =>{
       fpm.publish('#socket/offline', message);

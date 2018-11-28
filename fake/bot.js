@@ -3,6 +3,8 @@ const _ = require('lodash');
 
 const LOCAL_HOST = 'localhost';
 
+const REMOTE_HOST = '192.168.100.196';
+
 const PORT = 5001;
 
 const ID = _.now();
@@ -41,7 +43,7 @@ const reconnect = () => {
 }
 
 const create = () => {
-    let client = net.createConnection({ host: LOCAL_HOST, port: PORT, timeout: 9 * 1000 }, () =>{
+    let client = net.createConnection({ host: REMOTE_HOST, port: PORT, timeout: 9 * 1000 }, () =>{
         console.log('------------- Connected! Ready To GO ...');
         if(intervalHandle){
             clearInterval(intervalHandle)
