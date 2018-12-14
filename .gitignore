@@ -6,3 +6,4 @@ config.json
 /db.lock
 /mysqldata
 /logs
+*-lock.json
