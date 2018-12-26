@@ -8,7 +8,7 @@
     "test": "./node_modules/.bin/mocha test/*.test.js",
     "start": "node source/app.js",
     "dev": "./node_modules/.bin/nodemon source/app.js",
-    "make:linux": "./Makefile.sh",
+    "make:docker": "./Makefile.sh",
     "run:docker": "docker-compose up --build -d",
     "run:pm2": "pm2 start source/app.js --name fpm-iot-cloud-middleware -i 1",
     "bot": "node ./fake/bot.js"
