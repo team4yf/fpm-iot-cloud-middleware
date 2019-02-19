@@ -1,7 +1,7 @@
 const net = require('net');
 const _ = require('lodash');
 
-const LOCAL_HOST = 'localhost';
+const LOCAL_HOST = '192.168.100.196';
 
 const PORT = 5001;
 
