@@ -3,6 +3,7 @@ const _ = require('lodash');
 const TAG = '[Decoder]:';
 const MIN_DATA_LENGTH_P_0 = 22; // 25b
 const MIN_DATA_LENGTH_P_FF = 5; // 5b
+const MIN_DATA_LENGTH_P_EE = 5; // 5b
 const MAX_DATA_LENGTH = 64 * 1024; // 64kb
 
 const protocols = {
@@ -28,6 +29,28 @@ const protocols = {
       const data = hex.slice(16); // the message origin data
 
       return { header: { vid: 0, uid, pid, nb, sid, fn, extra }, payload: data.toString('hex') };
+    }catch(e){
+      console.error(TAG, 'Exception:', e);
+      return ;
+    }
+  },
+
+  0xee: hex => {
+    if(hex.length < MIN_DATA_LENGTH_P_EE){
+      console.error(TAG, `The hex data is too short. It's at least ${MIN_DATA_LENGTH_P_EE} bytes`, hex);
+      return ;
+    }
+    try{
+      const uid = hex.readUIntBE(1, 3);   // the message user id
+      const pid = hex.readUIntBE(4, 4);   // the project id
+      // normally the nb id is a string with 15 numbers
+      let nb = ''; // the nb id ? optionial
+      const sid = hex.toString('hex', 8, 8 + 4);    // the device sn id
+      const fn = hex.readUIntBE(12, 1);   // the function code
+      const extra = hex.readUIntBE(13, 2);   // the extra data
+      const data = hex.slice(15); // the message origin data
+
+      return { header: { vid: 0xee, uid, pid, nb, sid, fn, extra }, payload: data.toString('hex') };
     }catch(e){
       console.error(TAG, 'Exception:', e);
       return ;
