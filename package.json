@@ -23,8 +23,8 @@
     "yf-fpm-server": "^2.5.0"
   },
   "devDependencies": {
+    "fpmc-jssdk": "^1.0.4",
     "mocha": "^3.2.0",
-    "nodemon": "^1.11.0",
-    "yf-fpm-client-js": "^1.0.2"
+    "nodemon": "^1.11.0"
   }
 }
