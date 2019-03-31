@@ -16,15 +16,15 @@
   "author": "FPM-TEAM",
   "dependencies": {
     "babel-runtime": "^6.0.0",
-    "fpm-plugin-mqtt-client": "^1.0.0",
+    "fpm-plugin-mqtt-client": "^1.1.0",
     "fpm-plugin-nbiot": "^1.0.7",
     "fpm-plugin-socket": "^1.0.10",
     "lodash": "^4.17.11",
-    "yf-fpm-server": "^2.5.0"
+    "yf-fpm-server": "^2.5.3"
   },
   "devDependencies": {
-    "fpmc-jssdk": "^1.0.4",
-    "mocha": "^3.2.0",
-    "nodemon": "^1.11.0"
+    "fpmc-jssdk": "^1.0.7",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
   }
 }

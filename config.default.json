@@ -1,6 +1,6 @@
 {
     "mqttserver":{
-        "host": "192.168.100.196",
+        "host": "www.ruichen.top",
         "port": 1883,
         "username": "admin",
         "password": "123123123"
