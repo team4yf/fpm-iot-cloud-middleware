@@ -12,7 +12,7 @@ const createWebhook = fpm => {
       debug('%o, %O', topic, message);
       const { deviceId, service } = message;
       debug('typeof: %s, data: %s', typeof(service.data), service.data );
-      fpm.execute('mqtt.publish', {
+      fpm.execute('mqttclient.publish', {
         topic: `$d2s/u13/p0/tianyi`,
         payload: { deviceId, data: service.data },
       })
