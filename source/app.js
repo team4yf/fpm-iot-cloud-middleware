@@ -5,8 +5,6 @@ const { createTcp } = require('./tcp.js');
 
 const { createNB } = require('./nb');
 
-const { createWebhook } = require('./webhook');
-
 /* The Start: Create Fpm Server */
 const fpmServer = new Fpm();
 
@@ -18,7 +16,6 @@ fpmServer.run()
 	.then(fpm => {
     createTcp(fpm);
     createNB(fpm);
-    createWebhook(fpm);
     fpm.execute('mqttclient.subscribe', 
       { topic: [
         '$s2d/tcp/push',

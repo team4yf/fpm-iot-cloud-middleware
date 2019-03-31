@@ -7,3 +7,4 @@ config.json
 /mysqldata
 /logs
 *-lock.json
+token.json

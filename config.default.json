@@ -4,5 +4,10 @@
         "port": 1883,
         "username": "admin",
         "password": "123123123"
+    },
+    "tianyi": {
+        "appId": "XdbNkfbFSRYPJhs4H2EJ4G12w6Aa",
+        "secret": "N5fUGGNl9aJIDapXNVkI3SVIfCYa",
+        "webhook": "http://iot.yunplus.io/webhook/tianyi/notify/datachange"
     }
 }
