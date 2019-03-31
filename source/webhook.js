@@ -10,11 +10,11 @@ const createWebhook = fpm => {
   fpm.subscribe(`#webhook/tianyi/notify`, (topic, message) => {
     try {
       debug('%o, %O', topic, message);
-      const { deviceId, services } = message;
-      debug('typeof: %s, data: %s', typeof(services.data), services.data );
+      const { deviceId, service } = message;
+      debug('typeof: %s, data: %s', typeof(service.data), service.data );
       fpm.execute('mqtt.publish', {
         topic: `$d2s/u13/p0/tianyi`,
-        payload: { deviceId, data: services.data },
+        payload: { deviceId, data: service.data },
       })
       .catch(error => {
         debug('ERROR: %O', error)
