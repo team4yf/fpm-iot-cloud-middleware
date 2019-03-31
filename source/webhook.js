@@ -9,10 +9,15 @@ const { decoder } = require('./kit.js');
 const createWebhook = fpm => {
   fpm.subscribe(`#webhook/tianyi/notify`, (topic, message) => {
     // console.log(topic, message);
-    debug('%o, %o', topic, message);
+    debug('%o, %O', topic, message);
+    const { deviceId, services } = message;
+    debug('typeof: %s, data: %s', typeof(services.data), services.data );
     fpm.execute('mqtt.publish', {
       topic: `$d2s/u13/p0/tianyi`,
-      payload: message,
+      payload: { deviceId, data: services.data },
+    })
+    .catch(error => {
+      debug('ERROR: %O', error)
     })
     // fpm.publish('#tianyi/notify', message);
   })
