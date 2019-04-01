@@ -5,14 +5,11 @@
 ## Data Packet Define
 
 平台使用的数据接口限制了使用 16 进制的数据传输，因此无法使用之前的方式来交互数据。
+定义了一个结构体`Payload`来封装数据包头和数据体; 默认最多使用 `40B` 的数据长度；根据其 `LENGTH` 字段来协商数据长度，避免数据超出长度。
 
-定义了一个结构体`Header`来封装数据包头;
+### Payload Define
 
-定义了一个结构体`Payload`来封装数据体; 默认最多使用 `40B` 的数据长度；根据其 `LENGTH` 字段来协商数据长度，避免数据超出长度。
-
-### Header Define
-
-包头占用一个 Service, 定义其名称： `Header` 。
+消息体包含了业务数据的详细内容，定义其名称： `Payload` .
 
 Fields
 
@@ -35,12 +32,6 @@ Fields
   - EXTRA [2B]
 
     The Extra Code.
-
-### Payload Define
-
-消息体包含了业务数据的详细内容，定义其名称： `Payload` .
-
-Fields
 
   - LENGTH [1B]
 
