@@ -92,8 +92,9 @@ exports.decode = ( body ) => {
 exports.encode = hex => {
   try {
     assert(!!hex, 'Hex should required~');
-    assert(typeof(hex) === 'string', `Hex should be string: the actual type:${typeof(hex)}`);
-    const parts = hex.split('|');
+    const hexStr = hex.toString();
+    assert(typeof(hexStr) === 'string', `Hex should be string: the actual type:${typeof(hexStr)}`);
+    const parts = hexStr.split('|');
     assert(parts.length === 2, 'Hex should be split by | ');
     const deviceId = parts[0];
 
@@ -122,7 +123,7 @@ exports.encode = hex => {
     })
 
     return {
-      deviceId, params, payload: payload.toString('hex'),
+      deviceId, params,
     }
   } catch (error) {
     debug('ENCODE ERROR: %O', error)
