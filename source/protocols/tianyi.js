@@ -93,6 +93,7 @@ exports.encode = hex => {
   try {
     assert(!!hex, 'Hex should required~');
     const hexStr = hex.toString();
+    debug('the input hex: %O, hexStr: %s', hex, hexStr);
     assert(typeof(hexStr) === 'string', `Hex should be string: the actual type:${typeof(hexStr)}`);
     const parts = hexStr.split('|');
     assert(parts.length === 2, 'Hex should be split by | ');
