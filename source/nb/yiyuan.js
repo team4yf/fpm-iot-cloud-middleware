@@ -3,13 +3,13 @@
  */
 const _ = require('lodash');
 const debug = require('debug')('fpm-iot-cloud-middleware:yiyuan');
-const tianyi = require('../protocols/tianyi');
+const { decode, encode } = require('../protocols/tianyi');
 
 const createNB4Tianyi = fpm => {
   fpm.subscribe(`#tianyi/notify`, (topic, message) => {
     try {
       debug('%o, %O', topic, message);
-      const { header, payload } = tianyi(message);
+      const { header, payload } = decode(message);
       const { uid, pid } = header;
       fpm.execute('mqttclient.publish', {
         topic: `$d2s/u${uid}/p${pid}/tianyi`,
@@ -25,11 +25,16 @@ const createNB4Tianyi = fpm => {
 
   fpm.subscribe(`$s2d/nb/yiyuan/push`, (topic, message) => {
     if(!message) return;
-    const { deviceId, command } = message;
+    const { deviceId, params } = encode(message);
+    debug('%o, %O', deviceId, params);
     fpm.execute('tianyi.send', 
       { 
         deviceId: deviceId,
-        command
+        command: {
+          serviceId: 'Cmd',
+          method: 'Set_Cmd',
+          paras: params
+        }
       })
       .catch( error => {
         debug('ERROR: %O', error)

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const tianyi = require("../source/protocols/tianyi.js");
+const { decode, encode } = require("../source/protocols/tianyi.js");
 
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
@@ -17,7 +17,7 @@ const BODY = {
         "VID": 221,
         "UID": 3,
         "PID": 3,
-        "SID": 0xfffcfdfe,
+        "SID": -66052, // 0xfffefdfc, // -66052
         "FN": 5,
         "EXTRA": 13
       },
@@ -39,10 +39,10 @@ const BODY = {
   ]
 }
 
-describe('Common Protocol Test', function(){
+describe('Tianyi Protocol Test', function(){
 
-  it('tianyi Version', function(done){
-    const packet = tianyi(BODY);
+  it('decode', function(done){
+    const packet = decode(BODY);
     //
     const { header, payload } = packet;
     //vid: 0, uid, pid, nb, sid, fn, extra
@@ -51,11 +51,28 @@ describe('Common Protocol Test', function(){
     assert.strictEqual(uid, 3, 'uid should be 3');
     assert.strictEqual(pid, 3, 'pid should be 3');
     assert.strictEqual(nb, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'NB should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
-    assert.strictEqual(sid, 'fffcfdfe', 'sid should be fffcfdfe');
+    assert.strictEqual(sid, 'fffefdfc', 'sid should be 0xfffefdfc');
     assert.strictEqual(fn, 0x05, 'fn should be 0x05');
     assert.strictEqual(extra, 13, 'extra should be 13');
     assert.strictEqual(payload, '7465737410', 'payload should be 7465737410');
     done()
+  })
+
+  it('encode', function( done) {
+
+    const origin = '62386239326363372d323632322d346632372d613234622d30343161623236663062383005001305fffefdfc01';
+    const packet = encode(origin);
+    const { deviceId, params, payload } = packet;
+    const { FN, EXTRA, LENGTH, DATA_1 } = params;
+    console.log(params)
+    assert.strictEqual(deviceId, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'deviceId should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
+    assert.strictEqual(FN, 0x05, 'fn should be 0x05');
+    assert.strictEqual(EXTRA, 0x13, 'extra should be 0x13');
+    assert.strictEqual(LENGTH, 5, 'LENGTH should be 5');
+    assert.strictEqual(DATA_1, 0xfffefdfc, 'DATA_1 should be 0xfffefdfc');
+    assert.strictEqual(payload, 'fffefdfc01', 'payload should be fffefdfc01');
+
+    done();
   })
 
 })

@@ -45,7 +45,7 @@ Body:
 
 //*/
 
-module.exports = ( body ) => {
+exports.decode = ( body ) => {
   
   try {
     const { deviceId, gatewayId, services } = body;
@@ -65,7 +65,6 @@ module.exports = ( body ) => {
         const { LENGTH } = data;
         const max = Math.ceil(parseInt(LENGTH)/4);
         payload = Buffer.allocUnsafe(max * 4);
-        dataArr = new Int32Array(max);
         _.map(_.range(1, max + 1), index => {
           payload.writeInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
         });
@@ -77,9 +76,7 @@ module.exports = ( body ) => {
 
     assert(!!vid, 'VID required');
     assert(!!sid, 'SID required');
-
-    header.sid = sid.toString(16);
-
+    header.sid = (0xffffffff + sid + 1).toString(16);
     // use the special protocol for parse the data .
     return {
       header,
@@ -89,4 +86,42 @@ module.exports = ( body ) => {
     throw error;
   }
   
+}
+
+exports.encode = hex => {
+  assert(!!hex, 'Hex should required~');
+  let buf;
+  if(Buffer.isBuffer(hex)){
+    buf = hex;
+  }else{
+    buf = Buffer.from(hex, 'hex');
+  }
+  assert(buf.length > 40, 'Hex size should > 40');
+  const OFFSET_START = 36;
+  const deviceId = buf.toString('ascii', 0, OFFSET_START);
+  const FN = buf.readInt8(OFFSET_START);
+  const EXTRA = buf.readInt16BE(OFFSET_START + 1);
+  const LENGTH = buf.readInt8(OFFSET_START + 3);
+  const payload = buf.slice(OFFSET_START + 4, OFFSET_START + 4 + LENGTH)
+  
+  const params = {
+    FN, EXTRA, LENGTH,
+  };
+
+  const max = Math.ceil(LENGTH / 4);
+  const delta = max * 4 - LENGTH;
+
+  let concatedPayload;
+  if(delta > 0){
+    concatedPayload = Buffer.concat( [payload, Buffer.from(_.fill(Array(delta), 0x00 ))] )
+  }else{
+    concatedPayload = payload;
+  }
+  _.map(_.range(1, max + 1), index => {
+    params[`DATA_${index}`] = concatedPayload.readUInt32BE( (index - 1) * 4);
+  })
+
+  return {
+    deviceId, params, payload: payload.toString('hex'),
+  }
 }
