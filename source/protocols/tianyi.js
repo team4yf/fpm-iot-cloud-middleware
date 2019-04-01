@@ -90,7 +90,7 @@ exports.decode = ( body ) => {
 
 exports.encode = hex => {
   assert(!!hex, 'Hex should required~');
-  assert(typeof(hex) === 'string', 'Hex should be string');
+  assert(typeof(hex) === 'string', `Hex should be string: the actual type:${typeof(hex)}`);
   const parts = hex.split('|');
   assert(parts.length === 2, 'Hex should be split by | ');
   const deviceId = parts[0];
