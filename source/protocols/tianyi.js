@@ -40,7 +40,6 @@ exports.decode = ( body ) => {
   
   try {
     const { deviceId, gatewayId, service } = body;
-    console.log(body);
     assert(!!service, 'service should required~');
 
     const { serviceId, data } = service;
@@ -72,7 +71,7 @@ exports.decode = ( body ) => {
     assert(!!vid, 'VID required');
     assert(!!sid, 'SID required');
 
-    // 用 buma 的方式转换16进制的数据
+    // 用 补码 的方式转换16进制的数据
 
     header.sid = (0xffffffff + sid + 1).toString(16);
     // use the special protocol for parse the data .

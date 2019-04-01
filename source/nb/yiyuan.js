@@ -10,6 +10,7 @@ const createNB4Tianyi = fpm => {
     try {
       debug('%o, %O', topic, message);
       const { header, payload } = decode(message);
+      debug('Decoded message, Header:%O, Payload: %O', header, payload)
       const { uid, pid } = header;
       fpm.execute('mqttclient.publish', {
         topic: `$d2s/u${uid}/p${pid}/tianyi`,
