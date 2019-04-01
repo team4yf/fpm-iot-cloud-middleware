@@ -25,20 +25,25 @@ const createNB4Tianyi = fpm => {
 
   fpm.subscribe(`$s2d/nb/yiyuan/push`, (topic, message) => {
     if(!message) return;
-    const { deviceId, params } = encode(message);
-    debug('%o, %O', deviceId, params);
-    fpm.execute('tianyi.send', 
-      { 
-        deviceId,
-        command: {
-          serviceId: 'Cmd',
-          method: 'Set_Cmd',
-          paras: params
-        }
-      })
-      .catch( error => {
-        debug('ERROR: %O', error)
-      });
+    try {
+      const { deviceId, params } = encode(message);
+      debug('%o, %O', deviceId, params);
+      fpm.execute('tianyi.send', 
+        { 
+          deviceId,
+          command: {
+            serviceId: 'Cmd',
+            method: 'Set_Cmd',
+            paras: params
+          }
+        })
+        .catch( error => {
+          debug('ERROR: %O', error)
+        });
+    } catch (error) {
+      debug('syntx ERROR: %O:', error)
+    }
+    
   })
 
 }

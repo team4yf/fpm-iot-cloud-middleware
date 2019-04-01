@@ -83,43 +83,50 @@ exports.decode = ( body ) => {
       payload: payload.toString('hex'),
     }
   } catch (error) {
+    debug('DECODE ERROR: %O', error)
     throw error;
   }
   
 }
 
 exports.encode = hex => {
-  assert(!!hex, 'Hex should required~');
-  assert(typeof(hex) === 'string', `Hex should be string: the actual type:${typeof(hex)}`);
-  const parts = hex.split('|');
-  assert(parts.length === 2, 'Hex should be split by | ');
-  const deviceId = parts[0];
+  try {
+    assert(!!hex, 'Hex should required~');
+    assert(typeof(hex) === 'string', `Hex should be string: the actual type:${typeof(hex)}`);
+    const parts = hex.split('|');
+    assert(parts.length === 2, 'Hex should be split by | ');
+    const deviceId = parts[0];
 
-  let buf = Buffer.from(parts[1], 'hex');
-  assert(buf.length > 3, 'Hex size should > 3');
-  const FN = buf.readInt8(0);
-  const EXTRA = buf.readInt16BE(1);
-  const LENGTH = buf.readInt8(3);
-  const payload = buf.slice(4, 4 + LENGTH);
+    let buf = Buffer.from(parts[1], 'hex');
+    assert(buf.length > 3, 'Hex size should > 3');
+    const FN = buf.readInt8(0);
+    const EXTRA = buf.readInt16BE(1);
+    const LENGTH = buf.readInt8(3);
+    const payload = buf.slice(4, 4 + LENGTH);
+    
+    const params = {
+      FN, EXTRA, LENGTH,
+    };
+
+    const max = Math.ceil(LENGTH / 4);
+    const delta = max * 4 - LENGTH;
+
+    let concatedPayload;
+    if(delta > 0){
+      concatedPayload = Buffer.concat( [payload, Buffer.from(_.fill(Array(delta), 0x00 ))] )
+    }else{
+      concatedPayload = payload;
+    }
+    _.map(_.range(1, max + 1), index => {
+      params[`DATA_${index}`] = concatedPayload.readUInt32BE( (index - 1) * 4);
+    })
+
+    return {
+      deviceId, params, payload: payload.toString('hex'),
+    }
+  } catch (error) {
+    debug('ENCODE ERROR: %O', error)
+    throw error;
+  }
   
-  const params = {
-    FN, EXTRA, LENGTH,
-  };
-
-  const max = Math.ceil(LENGTH / 4);
-  const delta = max * 4 - LENGTH;
-
-  let concatedPayload;
-  if(delta > 0){
-    concatedPayload = Buffer.concat( [payload, Buffer.from(_.fill(Array(delta), 0x00 ))] )
-  }else{
-    concatedPayload = payload;
-  }
-  _.map(_.range(1, max + 1), index => {
-    params[`DATA_${index}`] = concatedPayload.readUInt32BE( (index - 1) * 4);
-  })
-
-  return {
-    deviceId, params, payload: payload.toString('hex'),
-  }
 }
