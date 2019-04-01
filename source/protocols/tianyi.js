@@ -40,7 +40,7 @@ exports.decode = ( body ) => {
   
   try {
     const { deviceId, gatewayId, service } = body;
-    
+    console.log(body);
     assert(!!service, 'service should required~');
 
     const { serviceId, data } = service;
