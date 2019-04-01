@@ -4,51 +4,57 @@
 
 ## Data Packet Define
 
-```javascript
-// The hex data
-/*
-----------------------------------------------------------------------------------------------------------------
-| - VID  | - UID |  ProjectID  |        DeviceID         |      SN      | FN | EXTRA |      DATA...    |  CRC  |
---------------------------------------------------------------------------------------------------------------
-| - 1B - | - 3B  | ---- 4B --- | --------  36B --------- | ---- 4B ---- | 1B | - 2B -| ----- ?B ------ | - 2B  |
---------------------------------------------------------------------------------------------------------------
-                                                         |  ----------------   Origin DATA   ----------------  |
-----------------------------------------------------------------------------------------------------------------
+平台使用的数据接口限制了使用 16 进制的数据传输，因此无法使用之前的方式来交互数据。
 
-*/
-```
+定义了一个结构体来封装数据包头，数据上下文使用 `JsonObject` 的格式直接交互。
+
+### Header Define
+
+包头占用一个 Service, 定义其名称： `Header` 。
 
 Fields
 
-- VID
+  - VID [1B]
 
-  The Protocol ID. Defined `0xdd`.
-- UID
+    The Protocol ID. Defined `0xdd` = `221`.
+  - UID [3B]
 
-  The User ID.
-- ProjectID
+    The User ID.
+  - PID [4B]
 
-  The Project ID.
-- NBID
+    The Project ID.
 
-  The Device's NBID.
-- SN
+  - SN [4B]
 
-  The Device's SN Code.
-- FN
+    The Device's SN Code.
+  - FN [1B]
 
-  The Function Code.
-- EXTRA
+    The Function Code.
+  - EXTRA [2B]
 
-  The Extra Code.
-- DATA
+    The Extra Code.
 
-  The Main Data.
-- CRC
+### Payload Define
 
-  The CRC16 Compare Code.
+消息体包含了业务数据的详细内容，定义其名称： `Payload` .
+
+Fields
+
+  - LENGTH [1B]
+
+    The length of the data body.
+  - DATA_1 [4B]
+
+    The part1 of the data.
+
+  - DATA_`?` [4B]
+
+    The part`?` of the data. The `?` means `1-10`, Totally, the data max length is `40B`
+
+  
+  
 
 
 ## make the url has been subscribe
 
-`http://a.yunplus.io:9991/webhook/tianyi/notify/datachange`
+`http://a.yunplus.io:9992/webhook/tianyi/notify/datachange`
