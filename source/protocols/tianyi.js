@@ -90,19 +90,17 @@ exports.decode = ( body ) => {
 
 exports.encode = hex => {
   assert(!!hex, 'Hex should required~');
-  let buf;
-  if(Buffer.isBuffer(hex)){
-    buf = hex;
-  }else{
-    buf = Buffer.from(hex, 'hex');
-  }
-  assert(buf.length > 40, 'Hex size should > 40');
-  const OFFSET_START = 36;
-  const deviceId = buf.toString('ascii', 0, OFFSET_START);
-  const FN = buf.readInt8(OFFSET_START);
-  const EXTRA = buf.readInt16BE(OFFSET_START + 1);
-  const LENGTH = buf.readInt8(OFFSET_START + 3);
-  const payload = buf.slice(OFFSET_START + 4, OFFSET_START + 4 + LENGTH)
+  assert(typeof(hex) === 'string', 'Hex should be string');
+  const parts = hex.split('|');
+  assert(parts.length === 2, 'Hex should be split by | ');
+  const deviceId = parts[0];
+
+  let buf = Buffer.from(parts[1], 'hex');
+  assert(buf.length > 3, 'Hex size should > 3');
+  const FN = buf.readInt8(0);
+  const EXTRA = buf.readInt16BE(1);
+  const LENGTH = buf.readInt8(3);
+  const payload = buf.slice(4, 4 + LENGTH);
   
   const params = {
     FN, EXTRA, LENGTH,

@@ -29,7 +29,7 @@ const createNB4Tianyi = fpm => {
     debug('%o, %O', deviceId, params);
     fpm.execute('tianyi.send', 
       { 
-        deviceId: deviceId,
+        deviceId,
         command: {
           serviceId: 'Cmd',
           method: 'Set_Cmd',

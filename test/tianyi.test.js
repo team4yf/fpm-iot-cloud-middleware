@@ -60,17 +60,17 @@ describe('Tianyi Protocol Test', function(){
 
   it('encode', function( done) {
 
-    const origin = '62386239326363372d323632322d346632372d613234622d30343161623236663062383005001305fffefdfc01';
+    const origin = '141c0c85-24ca-4d2d-bf57-7e45591a3b88|05001308fffefdfc01000000';
     const packet = encode(origin);
     const { deviceId, params, payload } = packet;
-    const { FN, EXTRA, LENGTH, DATA_1 } = params;
+    const { FN, EXTRA, LENGTH, DATA_1, DATA_2 } = params;
     console.log(params)
-    assert.strictEqual(deviceId, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'deviceId should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
+    assert.strictEqual(deviceId, '141c0c85-24ca-4d2d-bf57-7e45591a3b88', 'deviceId should be 141c0c85-24ca-4d2d-bf57-7e45591a3b88');
     assert.strictEqual(FN, 0x05, 'fn should be 0x05');
     assert.strictEqual(EXTRA, 0x13, 'extra should be 0x13');
-    assert.strictEqual(LENGTH, 5, 'LENGTH should be 5');
+    assert.strictEqual(LENGTH, 8, 'LENGTH should be 8');
     assert.strictEqual(DATA_1, 0xfffefdfc, 'DATA_1 should be 0xfffefdfc');
-    assert.strictEqual(payload, 'fffefdfc01', 'payload should be fffefdfc01');
+    assert.strictEqual(DATA_2, 0x01000000, 'DATA_2 should be 0x01000000');
 
     done();
   })
