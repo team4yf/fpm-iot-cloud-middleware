@@ -34,7 +34,6 @@ const protocols = {
       return ;
     }
   },
-
   0xee: hex => {
     if(hex.length < MIN_DATA_LENGTH_P_EE){
       console.error(TAG, `The hex data is too short. It's at least ${MIN_DATA_LENGTH_P_EE} bytes`, hex);
