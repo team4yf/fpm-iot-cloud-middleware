@@ -14,7 +14,7 @@ const createNB4Tianyi = fpm => {
       const { uid, pid } = header;
       fpm.execute('mqttclient.publish', {
         topic: `$d2s/u${uid}/p${pid}/tianyi`,
-        payload,
+        payload: JSON.stringify({ header, payload }),
       })
       .catch(error => {
         debug('ERROR: %O', error)
