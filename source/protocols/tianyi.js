@@ -36,7 +36,7 @@ Body:
 
 //*/
 
-exports.decode = ( body ) => {
+exports.decode = ( body, needHead = true ) => {
   
   try {
     const { deviceId, gatewayId, service } = body;
@@ -60,7 +60,9 @@ exports.decode = ( body ) => {
     };
     const { LENGTH } = data;
     const max = Math.ceil(parseInt(LENGTH)/4);
-    payload = Buffer.allocUnsafe(max * 4);
+
+    let payload = Buffer.allocUnsafe(max * 4);
+
     _.map(_.range(1, max + 1), index => {
       payload.writeInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
     });
@@ -75,6 +77,16 @@ exports.decode = ( body ) => {
 
     header.sid = (0xffffffff + sid + 1).toString(16);
     // use the special protocol for parse the data .
+    if(needHead){
+      const headerBuf = Buffer.allocUnsafe(7);
+      headerBuf.writeInt32BE(data.SID)
+      headerBuf.writeInt8(data.FN, 4)
+      headerBuf.writeInt16BE(data.EXTRA, 5);
+
+      // debug('headerBuffer, %s', headerBuf.toString('hex'))
+      payload = Buffer.concat([ headerBuf, payload])
+    }
+    
     return {
       header,
       payload: payload.toString('hex'),

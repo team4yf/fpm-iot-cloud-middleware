@@ -18,7 +18,7 @@ const BODY = {
       "PID": 3,
       "SID": -66052, // 0xfffefdfc, // -66052
       "FN": 5,
-      "EXTRA": 13,
+      "EXTRA": 0x13,
       "LENGTH": 5,
       "DATA_1": 0x74657374,
       "DATA_2": 0x10000000,
@@ -36,7 +36,7 @@ describe('Tianyi Protocol Test', function(){
   it('decode', function(done){
     const packet = decode(BODY);
     //
-    const { header } = packet;
+    const { header, payload } = packet;
     //vid: 0, uid, pid, nb, sid, fn, extra
     const { vid, uid, pid, nb, sid, fn, extra } = header;
     assert.strictEqual(vid, 0xdd, 'VID should be 0');
@@ -45,8 +45,8 @@ describe('Tianyi Protocol Test', function(){
     assert.strictEqual(nb, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'NB should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
     assert.strictEqual(sid, 'fffefdfc', 'sid should be 0xfffefdfc');
     assert.strictEqual(fn, 0x05, 'fn should be 0x05');
-    assert.strictEqual(extra, 13, 'extra should be 13');
-    // assert.strictEqual(payload, '7465737410', 'payload should be 7465737410');
+    assert.strictEqual(extra, 0x13, 'extra should be 13');
+    assert.strictEqual(payload, 'fffefdfc0500137465737410', 'payload should be 7465737410');
     done()
   })
 
@@ -54,7 +54,7 @@ describe('Tianyi Protocol Test', function(){
 
     const origin = '141c0c85-24ca-4d2d-bf57-7e45591a3b88|05001308fffefdfc01000000';
     const packet = encode(origin);
-    const { deviceId, params, payload } = packet;
+    const { deviceId, params } = packet;
     const { FN, EXTRA, LENGTH, DATA_1, DATA_2 } = params;
     console.log(params)
     assert.strictEqual(deviceId, '141c0c85-24ca-4d2d-bf57-7e45591a3b88', 'deviceId should be 141c0c85-24ca-4d2d-bf57-7e45591a3b88');
