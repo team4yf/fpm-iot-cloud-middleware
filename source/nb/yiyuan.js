@@ -33,7 +33,7 @@ const createNB4Tianyi = fpm => {
         { 
           deviceId,
           command: {
-            serviceId: 'Cmd',
+            serviceId: 'Payload',
             method: 'Set_Cmd',
             paras: params
           }
