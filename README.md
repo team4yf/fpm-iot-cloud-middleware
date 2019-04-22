@@ -28,3 +28,21 @@ Such as:
 
 */
 
+### make ssl cert
+
+```bash
+$ openssl genrsa -out privatekey.pem 1024
+$ openssl req -new -key privatekey.pem -out certrequest.csr 
+$ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -days 5480 -out certificate.pem
+```
+
+```bash
+subject=C = CN, ST = JiangSu, L = YZ, O = yunplus.io, CN = *.yunplus.io, emailAddress = support@yunplus.io
+```
+
+- CN
+- JiangSu
+- YZ
+- yunplus.io
+- *.yunplus.io
+- support@yunplus.io
