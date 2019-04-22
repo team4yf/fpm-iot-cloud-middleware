@@ -2,7 +2,7 @@
     "ssl": {
         "key": "ssl/privatekey.pem",
         "cert": "ssl/certificate.pem",
-        "port": 8443
+        "port": 18443
     },
     "server": {
         "host": "0.0.0.0",
@@ -17,6 +17,6 @@
     "tianyi": {
         "appId": "XdbNkfbFSRYPJhs4H2EJ4G12w6Aa",
         "secret": "N5fUGGNl9aJIDapXNVkI3SVIfCYa",
-        "webhook": "http://a.yunplus.io:8443/webhook/tianyi/notify/datachange"
+        "webhook": "http://www.ruichen.top:18443/webhook/tianyi/notify/datachange"
     }
 }

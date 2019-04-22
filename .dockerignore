@@ -4,4 +4,6 @@ config.json
 fake/
 images/
 protocols/
+node_modules/
+package-lock.json
 *.md
