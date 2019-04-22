@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { decoder, hex2JSON } = require('./kit.js');
+const { decoder, encoder } = require('./protocols');
 
 const createTcp = fpm => {
 

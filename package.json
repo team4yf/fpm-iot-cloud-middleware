@@ -17,9 +17,8 @@
   "dependencies": {
     "debug": "^4.1.1",
     "fpm-plugin-mqtt-client": "^1.1.0",
-    "fpm-plugin-nbiot": "^1.0.7",
-    "fpm-plugin-socket": "^1.0.10",
-    "fpm-plugin-tianyi": "0.0.1",
+    "fpm-plugin-socket": "^1.1.1",
+    "fpm-plugin-tianyi": "1.0.1",
     "lodash": "^4.17.11",
     "yf-fpm-server": "^2.6.1"
   },

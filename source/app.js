@@ -21,7 +21,6 @@ fpmServer.run()
         '$s2d/tcp/push',
         '$s2d/tcp/broadcast',
         '$s2d/tcp/addChannel',
-        '$s2d/nb/youren/push', 
         '$s2d/nb/yiyuan/push', 
         '$d2s/offline/tcp', 
         '$d2s/online/tcp'
