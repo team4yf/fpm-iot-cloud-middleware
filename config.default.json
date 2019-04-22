@@ -1,4 +1,9 @@
 {
+    "ssl": {
+        "key": "ssl/privatekey.pem",
+        "cert": "ssl/certificate.pem",
+        "port": 8443
+    },
     "server": {
         "host": "0.0.0.0",
         "port": 9992
@@ -12,6 +17,6 @@
     "tianyi": {
         "appId": "XdbNkfbFSRYPJhs4H2EJ4G12w6Aa",
         "secret": "N5fUGGNl9aJIDapXNVkI3SVIfCYa",
-        "webhook": "http://iot.yunplus.io/webhook/tianyi/notify/datachange"
+        "webhook": "http://a.yunplus.io:8443/webhook/tianyi/notify/datachange"
     }
 }
