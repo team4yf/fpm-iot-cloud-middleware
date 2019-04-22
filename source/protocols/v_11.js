@@ -4,7 +4,7 @@
  */
 const _ = require('lodash');
 const assert = require('assert');
-const debug = require('debug')('fpm-iot-cloud-middleware:protocol-00');
+const debug = require('debug')('fpm-iot-cloud-middleware:protocol-11');
 
 const MIN_DATA_LENGTH_P_0 = 15; // 15b
 const MAX_DATA_LENGTH_P_0 = 70; // 70b
