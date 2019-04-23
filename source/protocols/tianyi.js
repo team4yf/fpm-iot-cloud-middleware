@@ -77,7 +77,7 @@ exports.decode = ( body, needHead = true ) => {
 
     header.sid = (0xffffffff + sid + 1).toString(16);
     // use the special protocol for parse the data .
-    if(needHead){
+    if(needHead && data.VID != 0x11){
       const headerBuf = Buffer.allocUnsafe(7);
       headerBuf.writeInt32BE(data.SID)
       headerBuf.writeUInt8(data.FN, 4)
