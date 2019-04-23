@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { decode, encode } = require("../source/protocols/tianyi.js");
+const { decode, encode } = require("../source/nb/tianyi.js/index.js");
 
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');

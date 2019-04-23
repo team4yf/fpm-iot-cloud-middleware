@@ -5,6 +5,8 @@ const _ = require('lodash');
 const assert = require('assert');
 const debug = require('debug')('fpm-iot-cloud-middleware:protocol-tianyi');
 
+const { decoder, encoder } = require('../protocols');
+
 /*
 The Data Body:
 Body:

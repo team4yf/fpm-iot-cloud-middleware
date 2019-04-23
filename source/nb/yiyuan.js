@@ -3,7 +3,7 @@
  */
 const _ = require('lodash');
 const debug = require('debug')('fpm-iot-cloud-middleware:yiyuan');
-const { decode, encode } = require('../protocols/tianyi');
+const { decode, encode } = require('./tianyi');
 
 const createNB4Tianyi = fpm => {
   fpm.subscribe(`#tianyi/notify`, (topic, message) => {
