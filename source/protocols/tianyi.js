@@ -3,7 +3,7 @@
  */
 const _ = require('lodash');
 const assert = require('assert');
-const debug = require('debug')('fpm-iot-cloud-middleware:protocol-dd');
+const debug = require('debug')('fpm-iot-cloud-middleware:protocol-tianyi');
 
 /*
 The Data Body:
@@ -80,7 +80,7 @@ exports.decode = ( body, needHead = true ) => {
     if(needHead){
       const headerBuf = Buffer.allocUnsafe(7);
       headerBuf.writeInt32BE(data.SID)
-      headerBuf.writeInt8(data.FN, 4)
+      headerBuf.writeUInt8(data.FN, 4)
       headerBuf.writeInt16BE(data.EXTRA, 5);
 
       // debug('headerBuffer, %s', headerBuf.toString('hex'))
