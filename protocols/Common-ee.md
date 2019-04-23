@@ -1,5 +1,7 @@
 # Protocol ee
 
+STATUS: TODO
+
 以 ee 开头的协议标准。用于适应 纯 tcp 应用开发的项目中。
 
 ## Data Packet Define

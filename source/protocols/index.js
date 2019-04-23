@@ -25,6 +25,10 @@ exports.decoder = hex => {
     assert(hex.length <= MAX_DATA_LENGTH, `The hex data is too large. 64 KB limit`)
     
     const vid = hex.toString('hex', 0, 1);   // the protocol version
+    if(vid === 'a0'){
+      // this is heartbeat data, ignore anyway.
+      return ;
+    }
     assert(checkProtocolExists(vid), `The protocol version: ${ vid } not implement!`);
 
     const { decode } = require(`./v_${ _.pad(vid, 2, '0') }.js`)
@@ -33,7 +37,8 @@ exports.decoder = hex => {
     return decode(hex);
   } catch (error) {
     debug('parse message data error: %O', error);
-    throw error;
+    console.error(error)
+    // throw error;
   }
   
 }
