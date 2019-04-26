@@ -1,5 +1,12 @@
 /**
- * The protocols common encoder
+ * The protocols common encoder.
+ * 此文件用于解析所有符合协议的数据流；
+ * 数据流必须是 Buffer 格式的；
+ * 以第一个字节作为数据的版本号，用于区分不同的数据解析方式；
+ * 不同的版本以其名称作为文件名；
+ * 每个版本协议中需要提供一个 decode 和 encode；
+ * 目前已经使用的协议包括：
+ * v11, vdd, vee
  */
 const _ = require('lodash');
 const assert = require('assert');
