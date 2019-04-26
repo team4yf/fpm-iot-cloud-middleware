@@ -77,7 +77,13 @@ exports.decode = ( body, needHead = true ) => {
 
     // 用 补码 的方式转换16进制的数据
 
-    header.sid = (0xffffffff + sid + 1).toString(16);
+    // FixBug here
+    if(sid < 0){
+      header.sid = (0xffffffff + sid + 1).toString(16);  
+    }else{
+      header.sid = sid.toString(16);
+    }
+    header.sid = _.padStart(header.sid, 8, '0');
     // use the special protocol for parse the data .
     if(needHead && data.VID != 0x11){
       const headerBuf = Buffer.allocUnsafe(7);

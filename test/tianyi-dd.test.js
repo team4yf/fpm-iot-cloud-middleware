@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { decode, encode } = require("../source/nb/tianyi.js/index.js");
+const { decode, encode } = require("../source/nb/tianyi.js");
 
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
@@ -16,7 +16,7 @@ const BODY = {
       "VID": 221,
       "UID": 3,
       "PID": 3,
-      "SID": -66052, // 0xfffefdfc, // -66052
+      "SID": 107675440, // 0xfffefdfc, // -66052
       "FN": 5,
       "EXTRA": 0x13,
       "LENGTH": 5,
@@ -43,10 +43,10 @@ describe('Tianyi Protocol Test', function(){
     assert.strictEqual(uid, 3, 'uid should be 3');
     assert.strictEqual(pid, 3, 'pid should be 3');
     assert.strictEqual(nb, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'NB should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
-    assert.strictEqual(sid, 'fffefdfc', 'sid should be 0xfffefdfc');
+    assert.strictEqual(sid, '066aff30', 'sid should be 066aff30');
     assert.strictEqual(fn, 0x05, 'fn should be 0x05');
     assert.strictEqual(extra, 0x13, 'extra should be 13');
-    assert.strictEqual(payload, 'fffefdfc0500137465737410', 'payload should be 7465737410');
+    assert.strictEqual(payload, '066aff300500137465737410', 'payload should be 7465737410');
     done()
   })
 
