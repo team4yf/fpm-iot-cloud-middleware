@@ -20,8 +20,6 @@ let client;
 
 const debug = require('debug')('TEST')
 
-const { decoder, hex2JSON } = require("../source/protocols");
-
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
 }

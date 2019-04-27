@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { decode, encode } = require("../source/nb/tianyi.js");
+const { decode, encode } = require("../source/protocols/tianyi.js");
 
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
@@ -13,16 +13,16 @@ const BODY = {
     "serviceId": "Payload",
     "serviceType": "Payload",
     "data": {
-      "VID": 17,
+      "VID": 0xdd,
       "UID": 1,
       "PID": 1,
-      "SID": -14614478, // 0xfffefdfc, // -66052
-      "FN": 170,
-      "EXTRA": 0,
-      "LENGTH": 27,
-      "DATA_1": -14614478,
-      "DATA_2": -1442840320,
-      "DATA_3": 302055680,
+      "SID": 0xfffefdfc, // 0xfffefdfc, // -66052
+      "FN": 0xaa,
+      "EXTRA": 0x0013,
+      "LENGTH": 12,
+      "DATA_1": 0xfffefdfc,
+      "DATA_2": 0xaa001374,
+      "DATA_3": 0x65737410,
       "DATA_4": 256,
       "DATA_5": 0,
       "DATA_6": 67072,
@@ -30,7 +30,6 @@ const BODY = {
     },
     "eventTime": "20170214T170220Z"
   }
-  
 }
 
 describe('Tianyi Protocol 11 Test', function(){
@@ -41,14 +40,14 @@ describe('Tianyi Protocol 11 Test', function(){
     const { header, payload } = packet;
     //vid: 0, uid, pid, nb, sid, fn, extra
     const { vid, uid, pid, nb, sid, fn, extra } = header;
-    assert.strictEqual(vid, 0x11, 'VID should be 11');
+    assert.strictEqual(vid, 0xdd, 'VID should be 11');
     assert.strictEqual(uid, 1, 'uid should be 1');
     assert.strictEqual(pid, 1, 'pid should be 1');
     assert.strictEqual(nb, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'NB should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
     assert.strictEqual(sid, 'fffefdfc', 'sid should be 0xfffefdfc');
     assert.strictEqual(fn, 0xaa, 'fn should be 0xaa');
-    assert.strictEqual(extra, 0x00, 'extra should be 00');
-    assert.strictEqual(payload, 'fffefdfc0500137465737410', 'payload should be 7465737410');
+    assert.strictEqual(extra, 0x0013, 'extra should be 0013');
+    assert.strictEqual(payload, 'fffefdfcaa00137465737410', 'payload should be fffefdfcaa00137465737410');
     done()
   })
 

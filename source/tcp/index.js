@@ -11,7 +11,7 @@
 const _ = require('lodash');
 const assert = require('assert');
 
-const { decoder } = require('./protocols');
+const { decoder } = require('../protocols');
 const debug = require('debug')('fpm-iot-cloud-middleware:tcp');
 
 const createTcp = fpm => {

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { decode, encode } = require("../source/nb/tianyi.js");
+const { decode, encode } = require("../source/protocols/tianyi.js");
 
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
@@ -16,7 +16,7 @@ const BODY = {
       "VID": 221,
       "UID": 3,
       "PID": 3,
-      "SID": 107675440, // 0xfffefdfc, // -66052
+      "SID": 0x066aff30, // 0xfffefdfc, // -66052
       "FN": 5,
       "EXTRA": 0x13,
       "LENGTH": 5,

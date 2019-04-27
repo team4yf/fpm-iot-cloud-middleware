@@ -1,7 +1,7 @@
 'use strict';
 const { Fpm } = require('yf-fpm-server');
 
-const { createTcp } = require('./tcp.js');
+const { createTcp } = require('./tcp');
 
 const { createNB } = require('./nb');
 

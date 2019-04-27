@@ -1,13 +1,12 @@
 /**
  * The protocol for tianyi iot platform.
+ * 该协议说明：Common-tianyi.md
  */
 const _ = require('lodash');
 const assert = require('assert');
 const debug = require('debug')('fpm-iot-cloud-middleware:protocol-tianyi');
 
-const { decoder, encoder } = require('../protocols');
-
-/*
+/**
 The Data Body:
 Body:
 {
@@ -35,11 +34,10 @@ Body:
     "eventTime": "20170214T170220Z"
   }
 }
-
 //*/
 
 exports.decode = ( body, needHead = true ) => {
-  
+
   try {
     const { deviceId, gatewayId, service } = body;
     assert(!!service, 'service should required~');
@@ -50,8 +48,8 @@ exports.decode = ( body, needHead = true ) => {
       return;
     }
 
-    const header = { 
-      nb: deviceId, 
+    const header = {
+      nb: deviceId,
       gatewayId ,
       vid: data.VID,
       uid: data.UID,
@@ -69,7 +67,7 @@ exports.decode = ( body, needHead = true ) => {
       payload.writeInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
     });
     payload = payload.slice(0, LENGTH);
-    
+
     const { vid, sid } = header;
 
     assert(!!vid, 'VID required');
@@ -79,7 +77,7 @@ exports.decode = ( body, needHead = true ) => {
 
     // FixBug here
     if(sid < 0){
-      header.sid = (0xffffffff + sid + 1).toString(16);  
+      header.sid = (0xffffffff + sid + 1).toString(16);
     }else{
       header.sid = sid.toString(16);
     }
@@ -94,7 +92,7 @@ exports.decode = ( body, needHead = true ) => {
       // debug('headerBuffer, %s', headerBuf.toString('hex'))
       payload = Buffer.concat([ headerBuf, payload])
     }
-    
+
     return {
       header,
       payload: payload.toString('hex'),
@@ -103,7 +101,6 @@ exports.decode = ( body, needHead = true ) => {
     debug('DECODE ERROR: %O', error)
     throw error;
   }
-  
 }
 
 exports.encode = hex => {
@@ -122,7 +119,7 @@ exports.encode = hex => {
     const EXTRA = buf.readInt16BE(1);
     const LENGTH = buf.readInt8(3);
     const payload = buf.slice(4, 4 + LENGTH);
-    
+
     const params = {
       FN, EXTRA, LENGTH,
     };
@@ -147,5 +144,4 @@ exports.encode = hex => {
     debug('ENCODE ERROR: %O', error)
     throw error;
   }
-  
 }
