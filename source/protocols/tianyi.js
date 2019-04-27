@@ -6,6 +6,7 @@ const _ = require('lodash');
 const assert = require('assert');
 const debug = require('debug')('fpm-iot-cloud-middleware:protocol-tianyi');
 
+const fields = 'VID,UID,PID,SID,FN,EXTRA,LENGTH'.toLowerCase().split(',');
 /**
 The Data Body:
 Body:
@@ -36,6 +37,32 @@ Body:
 }
 //*/
 
+/**
+ * 将无符号的整数转换诚有符号的整数，也就是通常的补码算法
+ * 如果是 > 0 的数，则直接返回该数
+ * 算法主要针对 < 0 的，也就是 f 开头的数
+ * 用全是 ff 的数 + 该数据 + 1
+ * 0xffff + src + 1 
+ * @param {*} uint 
+ */
+const convertUInt2Int = ( num, max ) => {
+  if( num >= 0) {
+    return num;
+  }
+
+  return max + num + 1;
+}
+
+/**
+ * 给二进制的字符串，在前面补0，以沾满字节
+ * @param {} hexString 
+ * @param {*} byte 
+ * @param {*} str 
+ */
+const paddingZero = ( hexString, byte = 2, str = '0') => {
+  return _.padStart(hexString, 2 * byte, str);
+}
+
 exports.decode = ( body, needHead = true ) => {
 
   try {
@@ -48,50 +75,51 @@ exports.decode = ( body, needHead = true ) => {
       return;
     }
 
-    const header = {
-      nb: deviceId,
-      gatewayId ,
-      vid: data.VID,
-      uid: data.UID,
-      pid: data.PID,
-      sid: data.SID,
-      fn: data.FN,
-      extra: data.EXTRA,
-    };
-    const { LENGTH } = data;
-    const max = Math.ceil(parseInt(LENGTH)/4);
+    const tempData = {};
+    _.map(fields, key => {
+      tempData[key] = data[key.toUpperCase()]
+    })
 
-    let payload = Buffer.allocUnsafe(max * 4);
-
-    _.map(_.range(1, max + 1), index => {
-      payload.writeUInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
-    });
-    payload = payload.slice(0, LENGTH);
-
-    const { vid, sid } = header;
-
+    const { sid, vid, pid, uid, fn, extra, length } = tempData;
     assert(!!vid, 'VID required');
     assert(!!sid, 'SID required');
 
-    // 用 补码 的方式转换16进制的数据
+    const header = {
+      nb: deviceId,
+      gatewayId ,
+      vid,
+      uid,
+      pid,
+      sid: convertUInt2Int(sid, 0xffffff),
+      fn: convertUInt2Int(fn, 0xff),
+      extra,
+    };
+    const max = Math.ceil(parseInt(length)/4);
 
-    // FixBug here
-    if(sid < 0){
-      header.sid = (0xffffffff + sid + 1).toString(16);
-    }else{
-      header.sid = sid.toString(16);
-    }
-    header.sid = _.padStart(header.sid, 8, '0');
+    let payload = Buffer.allocUnsafe(max * 4);
+
+    // 将数据填充到 Buffer 中
+    _.map(_.range(1, max + 1), index => {
+      payload.writeUInt32BE(convertUInt2Int(data[`DATA_${index}`], 0xffffffff), (index - 1) * 4 )
+    });
+    // 去除超出max的数据
+    payload = payload.slice(0, length);
+
     // use the special protocol for parse the data .
     if(needHead && data.VID != 0x11){
       const headerBuf = Buffer.allocUnsafe(7);
-      headerBuf.writeUInt32BE(data.SID)
-      headerBuf.writeUInt8(data.FN, 4)
-      headerBuf.writeInt16BE(data.EXTRA, 5);
+      headerBuf.writeUInt32BE(header.sid)
+      headerBuf.writeUInt8(header.fn, 4)
+      headerBuf.writeUInt16BE(header.extra, 5);
 
       // debug('headerBuffer, %s', headerBuf.toString('hex'))
       payload = Buffer.concat([ headerBuf, payload])
     }
+
+    // 用 补码 的方式转换16进制的数据
+    header.sid = header.sid.toString(16);
+    // 转换成字符串
+    header.sid = paddingZero(header.sid, 4);
 
     return {
       header,
