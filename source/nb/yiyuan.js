@@ -18,7 +18,7 @@ const createNB4Tianyi = fpm => {
       })
       .catch(error => {
         debug('ERROR: %O', error)
-      })  
+      })
     } catch (error) {
       debug('syntx ERROR: %O:', error)
     }
@@ -29,8 +29,8 @@ const createNB4Tianyi = fpm => {
     try {
       const { deviceId, params } = encode(message);
       debug('%o, %O', deviceId, params);
-      fpm.execute('tianyi.send', 
-        { 
+      fpm.execute('tianyi.send',
+        {
           deviceId,
           command: {
             serviceId: 'Payload',

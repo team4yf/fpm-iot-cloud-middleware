@@ -4,7 +4,9 @@
  * 数据流必须是 Buffer 格式的；
  * 以第一个字节作为数据的版本号，用于区分不同的数据解析方式；
  * 不同的版本以其名称作为文件名；
- * 每个版本协议中需要提供一个 decode 和 encode；
+ * 每个版本协议中需要提供一个 decode 和 encode;
+ * Decode 用于解析从设备上传到平台的数据
+ * Encode 用于拼接应用下发给设备的数据
  * 目前已经使用的协议包括：
  * v11, vdd, vee
  */
@@ -30,7 +32,7 @@ exports.decoder = hex => {
     }
     assert(Buffer.isBuffer(hex), `The hex type is ${ typeof hex } ! It can be decode .`)
     assert(hex.length <= MAX_DATA_LENGTH, `The hex data is too large. 64 KB limit`)
-    
+
     const vid = hex.toString('hex', 0, 1);   // the protocol version
     if(vid === 'a0'){
       // this is heartbeat data, ignore anyway.
@@ -44,10 +46,8 @@ exports.decoder = hex => {
     return decode(hex);
   } catch (error) {
     debug('parse message data error: %O', error);
-    console.error(error)
-    // throw error;
+    throw error;
   }
-  
 }
 
 exports.hex2JSON = hex => {
