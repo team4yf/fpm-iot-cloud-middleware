@@ -64,7 +64,7 @@ exports.decode = ( body, needHead = true ) => {
     let payload = Buffer.allocUnsafe(max * 4);
 
     _.map(_.range(1, max + 1), index => {
-      payload.writeInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
+      payload.writeUInt32BE(data[`DATA_${index}`], (index - 1) * 4 )
     });
     payload = payload.slice(0, LENGTH);
 
@@ -85,7 +85,7 @@ exports.decode = ( body, needHead = true ) => {
     // use the special protocol for parse the data .
     if(needHead && data.VID != 0x11){
       const headerBuf = Buffer.allocUnsafe(7);
-      headerBuf.writeInt32BE(data.SID)
+      headerBuf.writeUInt32BE(data.SID)
       headerBuf.writeUInt8(data.FN, 4)
       headerBuf.writeInt16BE(data.EXTRA, 5);
 

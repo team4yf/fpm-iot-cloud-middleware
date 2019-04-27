@@ -13,7 +13,7 @@ const BODY = {
     "serviceId": "Payload",
     "serviceType": "Payload",
     "data": {
-      "VID": 0xdd,
+      "VID": 0x11,
       "UID": 1,
       "PID": 1,
       "SID": 0xfffefdfc, // 0xfffefdfc, // -66052
@@ -23,7 +23,7 @@ const BODY = {
       "DATA_1": 0xfffefdfc,
       "DATA_2": 0xaa001374,
       "DATA_3": 0x65737410,
-      "DATA_4": 256,
+      "DATA_4": 0x11111111,
       "DATA_5": 0,
       "DATA_6": 67072,
       "DATA_7": 0,
@@ -40,7 +40,7 @@ describe('Tianyi Protocol 11 Test', function(){
     const { header, payload } = packet;
     //vid: 0, uid, pid, nb, sid, fn, extra
     const { vid, uid, pid, nb, sid, fn, extra } = header;
-    assert.strictEqual(vid, 0xdd, 'VID should be 11');
+    assert.strictEqual(vid, 0x11, 'VID should be 11');
     assert.strictEqual(uid, 1, 'uid should be 1');
     assert.strictEqual(pid, 1, 'pid should be 1');
     assert.strictEqual(nb, 'b8b92cc7-2622-4f27-a24b-041ab26f0b80', 'NB should be b8b92cc7-2622-4f27-a24b-041ab26f0b80');
