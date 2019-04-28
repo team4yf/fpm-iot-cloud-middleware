@@ -6,7 +6,13 @@ const _ = require('lodash');
 const assert = require('assert');
 const debug = require('debug')('fpm-iot-cloud-middleware:protocol-tianyi');
 
-const fields = 'VID,UID,PID,SID,FN,EXTRA,LENGTH'.toLowerCase().split(',');
+const fields = 'VID,UID,PID,SID,FN,EXTRA,LENGTH'.split(',');
+
+const fieldsMap = {};
+
+_.map(fields, field => {
+  fieldsMap[field.toLowerCase()] = field;
+})
 /**
 The Data Body:
 Body:
@@ -45,7 +51,7 @@ Body:
  * 0xffff + src + 1 
  * @param {*} uint 
  */
-const convertUInt2Int = ( num, max ) => {
+const convertInt2UInt = ( num, max ) => {
   if( num >= 0) {
     return num;
   }
@@ -60,6 +66,9 @@ const convertUInt2Int = ( num, max ) => {
  * @param {*} str 
  */
 const paddingZero = ( hexString, byte = 2, str = '0') => {
+  if( typeof (hexString) == 'number'){
+    hexString = hexString.toString(16);
+  }
   return _.padStart(hexString, 2 * byte, str);
 }
 
@@ -69,18 +78,21 @@ exports.decode = ( body, needHead = true ) => {
     const { deviceId, gatewayId, service } = body;
     assert(!!service, 'service should required~');
 
+    // Ignore the data packet if the id is not 'Payload'
     const { serviceId, data } = service;
     if( serviceId !== 'Payload'){
       debug('ignore the serviceId:%o', serviceId);
       return;
     }
 
+    // get all data of the packet, lowercase the key;
     const tempData = {};
-    _.map(fields, key => {
-      tempData[key] = data[key.toUpperCase()]
+    _.map(fieldsMap, (upKey, key) => {
+      tempData[key] = data[upKey]
     })
 
     const { sid, vid, pid, uid, fn, extra, length } = tempData;
+
     assert(!!vid, 'VID required');
     assert(!!sid, 'SID required');
 
@@ -90,22 +102,25 @@ exports.decode = ( body, needHead = true ) => {
       vid,
       uid,
       pid,
-      sid: convertUInt2Int(sid, 0xffffff),
-      fn: convertUInt2Int(fn, 0xff),
+      sid,
+      fn,
       extra,
     };
+    // make a buffer of the length.
     const max = Math.ceil(parseInt(length)/4);
-
+    debug('the actual data length: %d, max data length: %d x 4', length, max);
     let payload = Buffer.allocUnsafe(max * 4);
 
     // 将数据填充到 Buffer 中
     _.map(_.range(1, max + 1), index => {
-      payload.writeUInt32BE(convertUInt2Int(data[`DATA_${index}`], 0xffffffff), (index - 1) * 4 )
+      payload.writeUInt32BE(convertInt2UInt(data[`DATA_${index}`], 0xffffffff), (index - 1) * 4 )
     });
     // 去除超出max的数据
     payload = payload.slice(0, length);
 
     // use the special protocol for parse the data .
+
+    /*
     if(needHead && data.VID != 0x11){
       const headerBuf = Buffer.allocUnsafe(7);
       headerBuf.writeUInt32BE(header.sid)
@@ -115,15 +130,16 @@ exports.decode = ( body, needHead = true ) => {
       // debug('headerBuffer, %s', headerBuf.toString('hex'))
       payload = Buffer.concat([ headerBuf, payload])
     }
+    //*/
 
     // 用 补码 的方式转换16进制的数据
-    header.sid = header.sid.toString(16);
+    header.sid = convertInt2UInt(header.sid, 0xffffffff);
     // 转换成字符串
     header.sid = paddingZero(header.sid, 4);
 
     return {
       header,
-      payload: payload.toString('hex'),
+      payload,
     }
   } catch (error) {
     debug('DECODE ERROR: %O', error)

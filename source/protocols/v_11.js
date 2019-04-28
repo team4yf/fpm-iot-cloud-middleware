@@ -30,6 +30,11 @@ exports.decode = (hex) => {
   }
 }
 
+exports.concatHeader = ( header, payload ) => {
+
+  return payload;
+}
+
 exports.encode = (hex) => {
   // TODO, define the logic
   return hex;

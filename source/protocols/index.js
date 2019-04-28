@@ -67,3 +67,17 @@ exports.hex2JSON = hex => {
     throw error;
   }
 }
+
+exports.concatHeader = (header, payload) => {
+  let { vid } = header;
+  vid = vid.toString(16)
+  try {
+    assert(checkProtocolExists(vid), `The protocol version: ${ vid } not implement!`);
+
+    const { concatHeader } = require(`./v_${ _.pad(vid, 2, '0') }.js`)
+    return concatHeader(header, payload);
+  } catch (error) {
+    debug('concatHeader error: %O', error);
+    throw error;
+  }
+}

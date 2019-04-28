@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { decode, encode } = require("../source/protocols/tianyi.js");
-
+const { concatHeader } = require('../source/protocols');
 String.prototype.trim = function(){
   return this.replace(/\s/g, '');
 }
@@ -38,6 +38,7 @@ describe('Tianyi Protocol Test', function(){
     //
     const { header, payload } = packet;
     //vid: 0, uid, pid, nb, sid, fn, extra
+    const concatedPayload = concatHeader(header, payload);
     const { vid, uid, pid, nb, sid, fn, extra } = header;
     assert.strictEqual(vid, 0xdd, 'VID should be 0');
     assert.strictEqual(uid, 3, 'uid should be 3');
@@ -46,7 +47,7 @@ describe('Tianyi Protocol Test', function(){
     assert.strictEqual(sid, '066aff30', 'sid should be 066aff30');
     assert.strictEqual(fn, 0x05, 'fn should be 0x05');
     assert.strictEqual(extra, 0x13, 'extra should be 13');
-    assert.strictEqual(payload, '066aff300500137465737410', 'payload should be 7465737410');
+    assert.strictEqual(concatedPayload.toString('hex'), '066aff300500137465737410', 'payload should be 7465737410');
     done()
   })
 

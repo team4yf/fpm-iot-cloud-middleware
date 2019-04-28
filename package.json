@@ -23,6 +23,7 @@
     "yf-fpm-server": "^2.6.1"
   },
   "devDependencies": {
+    "axios": "^0.18.0",
     "fpmc-jssdk": "^1.0.8",
     "mocha": "^6.0.2",
     "nodemon": "^1.18.10"

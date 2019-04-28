@@ -10,8 +10,7 @@
 const _ = require('lodash');
 const debug = require('debug')('fpm-iot-cloud-middleware:yiyuan');
 const { decode, encode } = require('../protocols/tianyi');
-
-const { decoder } = require('../protocols');
+const { concatHeader } = require('../protocols');
 
 const createNB4Tianyi = fpm => {
   // 订阅设备推送给平台的数据
@@ -20,11 +19,11 @@ const createNB4Tianyi = fpm => {
       debug('%o, %O', topic, message);
       const { header, payload } = decode(message);
       debug('Decoded message, Header:%O, Payload: %O', header, payload)
-      // decoder(payload);
+      const concatedPayload = concatHeader(header, payload);
       const { uid, pid } = header;
       fpm.execute('mqttclient.publish', {
         topic: `$d2s/u${uid}/p${pid}/tianyi`,
-        payload: JSON.stringify({ header, payload }),
+        payload: JSON.stringify({ header, payload: concatedPayload }),
       })
       .catch(error => {
         debug('ERROR: %O', error)
