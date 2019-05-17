@@ -1,7 +1,7 @@
 const net = require('net');
 const _ = require('lodash');
 
-const LOCAL_HOST = '192.168.100.196';
+const LOCAL_HOST = 'www.ruichen.top';
 
 const PORT = 5001;
 
@@ -18,7 +18,7 @@ const send = ( client, data ) => {
         }
         return
     }
-    data = data || Buffer.from(`ee00000300000004ffffffff010000${Buffer.from(JSON.stringify({a:1})).toString('hex')}`, 'hex')
+    data = data || Buffer.from(`ee00000300000004ffffffff010000${Buffer.from(JSON.stringify({a:2})).toString('hex')}`, 'hex')
     console.info(data.toString('hex'), data)
     client.write(data);
 }
