@@ -15,8 +15,8 @@
         "password": "123123123"
     },
     "tianyi": {
-        "appId": "XdbNkfbFSRYPJhs4H2EJ4G12w6Aa",
-        "secret": "N5fUGGNl9aJIDapXNVkI3SVIfCYa",
-        "webhook": "http://www.ruichen.top:18443/webhook/tianyi/notify/datachange"
+        "appId": "***",
+        "secret": "***",
+        "webhook": "***"
     }
 }
