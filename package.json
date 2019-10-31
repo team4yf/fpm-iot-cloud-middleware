@@ -5,9 +5,9 @@
   "description": "An middleware for fpm-iot-cloud",
   "main": "source/app.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/*.test.js",
+    "test": "npx mocha test/*.test.js",
     "start": "node source/app.js",
-    "dev": "./node_modules/.bin/nodemon source/app.js",
+    "dev": "npx nodemon source/app.js",
     "make": "./Makefile.sh",
     "run:docker": "docker-compose up --build -d",
     "run:pm2": "pm2 start source/app.js --name fpm-iot-cloud-middleware -i 1",
@@ -16,7 +16,7 @@
   "author": "FPM-TEAM",
   "dependencies": {
     "debug": "^4.1.1",
-    "fpm-plugin-mqtt-client": "^1.1.0",
+    "fpm-plugin-mqtt-client": "^1.1.1",
     "fpm-plugin-socket": "^1.1.1",
     "fpm-plugin-tianyi": "1.0.1",
     "lodash": "^4.17.11",
