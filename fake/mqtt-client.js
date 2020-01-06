@@ -5,9 +5,9 @@ const { host, port } = config;
 const client = mqtt.connect(`mqtt://${host}:${port}`, config);
 
 
-client.subscribe(['$d2s/u3/p4/tcp']);
+client.subscribe(['$d2s/u3/p4/tcp', '$notify/charger'])
 
 // client.subscribe('$s2d/nb/youren/push');
 client.on('message', (topic, payload) => {
-	console.log(topic, payload)
+	console.log(topic, payload.toString())
 })

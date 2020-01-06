@@ -2,8 +2,9 @@ mysqldata/
 logs/
 config.json
 fake/
+test/
 images/
-protocols/
+documents/
 node_modules/
 package-lock.json
 *.md

@@ -1,11 +1,11 @@
 # stage1. use the node-alpine to install dependencies
-FROM node:10.15.3-alpine as build-node
+FROM node:12.14.0-alpine as build-node
 
 ADD ./package.json /tmp/package.json
 
 RUN cd /tmp && npm i --production
 # stage2. copy the source
-FROM node:10.15.3-alpine
+FROM node:12.14.0-alpine
 
 ADD ./package.json /app/package.json
 ADD ./source /app/source
