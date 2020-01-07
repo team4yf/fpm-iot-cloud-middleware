@@ -18,5 +18,15 @@
         "appId": "***",
         "secret": "***",
         "webhook": "***"
-    }
+    },
+    "notify": [
+        {
+            "url": "charger/:event",
+            "topic": "$notify/charger",
+            "bodyparser": "json",
+            "param": "event",
+            "header": { "project": "charger" },
+            "response": { "code": 200 }
+        }
+    ]
 }
