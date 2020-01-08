@@ -1,17 +1,21 @@
 version: '3'
 services:
   middleware:
-    build: .
+    image: yfsoftcom/fpm-iot-middleware
     container_name: 'fpm-iot-middleware'
     volumes:
       - ./config.json:/app/config.json
+      - ./ssl:/app/ssl
     ports:
       - "5001:5001"
+      - "9999:9999"
+      - "18443:18443"
     environment:
-      MQTT_HOST: "localhost"
+      MQTT_HOST: "www.ruichen.top"
       MQTT_PORT: 1883
       MQTT_USERNAME: "admin"
       MQTT_PASSWORD: "123123123"
+      DEBUG: "fpm-iot-cloud-middleware:app"
     networks:
       - fpm-network
     restart: always

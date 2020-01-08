@@ -20,7 +20,7 @@
     "fpm-plugin-socket": "^1.1.1",
     "fpm-plugin-tianyi": "1.0.1",
     "lodash": "^4.17.11",
-    "yf-fpm-server": "^2.6.1"
+    "yf-fpm-server": "^2.6.3"
   },
   "devDependencies": {
     "axios": "^0.18.0",
